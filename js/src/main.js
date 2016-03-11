@@ -63,11 +63,31 @@
 
     var moveInterval = setInterval(function() {
         if (cube.position.y === -8) {
-            clearInterval(moveInterval);
+            return clearInterval(moveInterval);
         }
 
         cube.position.y -= 1;
     }, 500);
+
+    window.addEventListener("keydown", function(e) {
+        switch (e.keyCode) {
+            case 37: // left
+                cube.position.x -= 1;
+            break;
+
+            case 39: // right
+                cube.position.x += 1;
+            break;
+
+            case 38: // top
+                cube.rotation.z += Math.PI / 2;
+            break;
+
+            case 40: // bottom
+                cube.position.y = -8;
+            break;
+        };
+    });
 
     render();
 }());
