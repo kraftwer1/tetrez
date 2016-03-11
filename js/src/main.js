@@ -2,7 +2,7 @@
     var width = window.innerWidth;
     var height = window.innerHeight;
     var aspectRatio = width / height;
-    var viewSize = 10;
+    var viewSize = 20;
 
     var camera = new THREE.OrthographicCamera(
         -(aspectRatio * viewSize / 2),
@@ -51,7 +51,23 @@
     var scene = new THREE.Scene();
     scene.add(cube);
 
-    renderer.render(scene, camera);
+    var render = function() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    };
+
+    // Place cube at top
+    cube.position.y = 8;
 
     document.body.appendChild(renderer.domElement);
+
+    var moveInterval = setInterval(function() {
+        if (cube.position.y === -8) {
+            clearInterval(moveInterval);
+        }
+
+        cube.position.y -= 1;
+    }, 500);
+
+    render();
 }());
