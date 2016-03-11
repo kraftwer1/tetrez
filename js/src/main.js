@@ -34,7 +34,11 @@
             // Adjust center point
             geometry.translate(-1.5, -.5, -.5);
 
-            return geometry;
+            var material = new THREE.MeshBasicMaterial({
+                color: 0xffb3ba
+            });
+
+            return new THREE.Mesh(geometry, material);
         }())
     };
 
@@ -42,14 +46,8 @@
     renderer.setSize(width, height);
     renderer.setClearColor(0xffdfba);
 
-    var material = new THREE.MeshBasicMaterial({
-        color: 0xffb3ba
-    });
-
-    var cube = new THREE.Mesh(blocks.t, material);
-
     var scene = new THREE.Scene();
-    scene.add(cube);
+    scene.add(blocks.t);
 
     var render = function() {
         requestAnimationFrame(render);
@@ -57,34 +55,38 @@
     };
 
     // Place cube at top
-    cube.position.y = 8;
+    blocks.t.position.y = 8;
 
     document.body.appendChild(renderer.domElement);
 
     var moveInterval = setInterval(function() {
-        if (cube.position.y === -8) {
+        if (blocks.t.position.y === -8) {
             return clearInterval(moveInterval);
         }
 
-        cube.position.y -= 1;
+        blocks.t.position.y -= 1;
     }, 500);
 
     window.addEventListener("keydown", function(e) {
         switch (e.keyCode) {
             case 37: // left
-                cube.position.x -= 1;
+                blocks.t.position.x -= 1;
             break;
 
             case 39: // right
-                cube.position.x += 1;
+                blocks.t.position.x += 1;
             break;
 
             case 38: // top
-                cube.rotation.z += Math.PI / 2;
+                blocks.t.rotation.z += Math.PI / 2;
             break;
 
             case 40: // bottom
-                cube.position.y = -8;
+                blocks.t.rotation.z -= Math.PI / 2;
+            break;
+
+            case 32: // space
+                blocks.t.position.y = -8;
             break;
         };
     });
