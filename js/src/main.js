@@ -40,10 +40,10 @@
 
     var renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(width, height);
+    renderer.setClearColor(0xffdfba);
 
     var material = new THREE.MeshBasicMaterial({
-        color: 0x000000,
-        wireframe: true
+        color: 0xffb3ba
     });
 
     var cube = new THREE.Mesh(blocks.t, material);
@@ -51,16 +51,7 @@
     var scene = new THREE.Scene();
     scene.add(cube);
 
-    var render = function() {
-        requestAnimationFrame(render);
-
-        cube.rotation.x += 0.005;
-        cube.rotation.y += 0.005;
-
-        renderer.render(scene, camera);
-    };
-
-    render();
+    renderer.render(scene, camera);
 
     document.body.appendChild(renderer.domElement);
 }());
