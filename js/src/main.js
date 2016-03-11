@@ -2,7 +2,7 @@
     var width = window.innerWidth;
     var height = window.innerHeight;
     var aspectRatio = width / height;
-    var viewSize = 20;
+    var viewSize = 10;
 
     var camera = new THREE.OrthographicCamera(
         -(aspectRatio * viewSize / 2),
@@ -16,21 +16,24 @@
     var blocks = {
         t: (function() {
             var shape = new THREE.Shape();
-            shape.moveTo(0, -1);
-            shape.lineTo(3, -1);
-            shape.lineTo(3, 1);
+            shape.moveTo(0, 0);
+            shape.lineTo(0, 1);
             shape.lineTo(1, 1);
-            shape.lineTo(1, 3);
-            shape.lineTo(-1, 3);
-            shape.lineTo(-1, 1);
-            shape.lineTo(-3, 1);
-            shape.lineTo(-3, -1);
+            shape.lineTo(1, 2);
+            shape.lineTo(2, 2);
+            shape.lineTo(2, 1);
+            shape.lineTo(3, 1);
+            shape.lineTo(3, 0);
 
-            return new THREE.ExtrudeGeometry(shape, {
-                amount: 2,
+            var geometry = new THREE.ExtrudeGeometry(shape, {
+                amount: 1,
                 bevelSize: 0,
                 bevelSegments: 0
             });
+
+            geometry.applyMatrix(new THREE.Matrix4().makeTranslation(-1.5, -.5, -.5));
+
+            return geometry;
         }())
     };
 
