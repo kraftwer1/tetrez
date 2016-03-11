@@ -31,7 +31,8 @@
                 bevelSegments: 0
             });
 
-            geometry.applyMatrix(new THREE.Matrix4().makeTranslation(-1.5, -.5, -.5));
+            // Adjust center point
+            geometry.translate(-1.5, -.5, -.5);
 
             return geometry;
         }())
