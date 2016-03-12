@@ -23,8 +23,6 @@
     //     }
     // };
 
-    var block = new Block;
-
     var field = [
         [true, true, true, true],
         [true, true, true, true],
@@ -32,36 +30,44 @@
         [true, true, true, true]
     ];
 
-    for (var i = 0; i < field.length; ++i) {
-        var canMoveToBottom = true;
+    var runs = 2;
 
-        // Check if move to bottom is possible
-        for (var j = 0; j < block.matrix.length; ++j) {
-            var y = block.matrix[j][0];
-            var x = block.matrix[j][1];
+    while (runs) {
+        var block = new Block;
 
-            // Break if next block is occupied or bottom end of field has reached
-            if (!field[y + 1] || !field[y + 1][x]) {
-                canMoveToBottom = false;
-                break;
-            }
-        }
+        for (var i = 0; i < field.length; ++i) {
+            var canMoveToBottom = true;
 
-        if (canMoveToBottom) {
-            block.moveDown();
-        } else {
-            // Cannot move any further, copy last block position into field
+            // Check if move to bottom is possible
             for (var j = 0; j < block.matrix.length; ++j) {
                 var y = block.matrix[j][0];
                 var x = block.matrix[j][1];
 
-                field[y][x] = false;
+                // Break if next block is occupied or bottom end of field has reached
+                if (!field[y + 1] || !field[y + 1][x]) {
+                    canMoveToBottom = false;
+                    break;
+                }
             }
 
-            console.log(field);
+            if (canMoveToBottom) {
+                block.moveDown();
+            } else {
+                // Cannot move any further, copy last block position into field
+                for (var j = 0; j < block.matrix.length; ++j) {
+                    var y = block.matrix[j][0];
+                    var x = block.matrix[j][1];
 
-            break;
+                    field[y][x] = false;
+                }
+
+                console.log(field);
+
+                break;
+            }
         }
+
+        --runs;
     }
 }());
 
