@@ -62,7 +62,56 @@
 
     var isFalling = false;
 
-    var fallDown = function() {
+    var copyTetrominoIntoField = function() {
+        for (var i = 0; i < tetromino.matrix.length; ++i) {
+            var y = tetromino.matrix[i][0];
+            var x = tetromino.matrix[i][1];
+
+            field[y][x] = 0;
+        }
+    };
+
+    var moveRight = function() {
+        var canMoveRight = true;
+
+        // Check every block if move to right is possible
+        for (var i = 0; i < tetromino.matrix.length; ++i) {
+            var y = tetromino.matrix[i][0];
+            var x = tetromino.matrix[i][1];
+
+            // Break if next field block is occupied or right end of field has reached
+            if (!field[y][x + 1]) {
+                canMoveRight = false;
+                break;
+            }
+        }
+
+        if (canMoveRight) {
+            tetromino.moveRight();
+        }
+    };
+
+    var moveLeft = function() {
+        var canMoveLeft = true;
+
+        // Check every block if move to left is possible
+        for (var i = 0; i < tetromino.matrix.length; ++i) {
+            var y = tetromino.matrix[i][0];
+            var x = tetromino.matrix[i][1];
+
+            // Break if next field block is occupied or right end of field has reached
+            if (!field[y][x - 1]) {
+                canMoveLeft = false;
+                break;
+            }
+        }
+
+        if (canMoveLeft) {
+            tetromino.moveLeft();
+        }
+    };
+
+    var moveDown = function() {
         var canMoveToBottom = true;
 
         // Add a new block if no one is currently falling
@@ -73,10 +122,10 @@
             isFalling = true;
         }
 
-        // Check if move to bottom is possible
-        for (var j = 0; j < tetromino.matrix.length; ++j) {
-            var y = tetromino.matrix[j][0];
-            var x = tetromino.matrix[j][1];
+        // Check every block if move to bottom is possible
+        for (var i = 0; i < tetromino.matrix.length; ++i) {
+            var y = tetromino.matrix[i][0];
+            var x = tetromino.matrix[i][1];
 
             // Break if next field block is occupied or bottom end of field has reached
             if (!field[y + 1] || !field[y + 1][x]) {
@@ -89,12 +138,7 @@
             tetromino.moveDown();
         } else {
             // Cannot move any further, copy last tetromino position into field
-            for (var j = 0; j < tetromino.matrix.length; ++j) {
-                var y = tetromino.matrix[j][0];
-                var x = tetromino.matrix[j][1];
-
-                field[y][x] = 0;
-            }
+            copyTetrominoIntoField();
 
             isFalling = false;
 
@@ -120,8 +164,8 @@
         }
     };
 
-    fallDown();
-    gameInterval = setInterval(fallDown, Tetrez.config.initSpeed);
+    moveDown();
+    gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
 
     render();
 
@@ -132,16 +176,18 @@
 
         switch (e.keyCode) {
             case 37: // Left
+                moveLeft();
             break;
 
             case 39: // Right
+                moveRight();
             break;
 
             case 38: // Top
             break;
 
             case 40: // Bottom
-                fallDown();
+                moveDown();
 
                 if (!isKeyRepeating) {
                     clearInterval(gameInterval);
@@ -169,7 +215,7 @@
             break;
 
             case 40: // Bottom
-                gameInterval = setInterval(fallDown, Tetrez.config.initSpeed);
+                gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
                 isKeyRepeating = false;
             break;
 

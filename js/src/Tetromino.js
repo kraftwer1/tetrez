@@ -48,6 +48,24 @@
         this.mesh.position.y -= 1;
     };
 
+    Tetrez.Tetromino.prototype.moveRight = function() {
+        // Increment x coordinates
+        for (var i = 0; i < this.matrix.length; ++i) {
+            ++this.matrix[i][1];
+        };
+
+        this.mesh.position.x += 1;
+    };
+
+    Tetrez.Tetromino.prototype.moveLeft = function() {
+        // Decrement x coordinates
+        for (var i = 0; i < this.matrix.length; ++i) {
+            --this.matrix[i][1];
+        };
+
+        this.mesh.position.x -= 1;
+    };
+
     // Tetromino.prototype.rotate = function() {
     //     var pivot = $V(this.matrix[1]);
 
