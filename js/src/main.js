@@ -2,32 +2,25 @@
 // - Blocks should fall from above the plane
 
 (function() {
-    // Init field, multidimensional with "1" values
+    // Init field, multidimensional with types for each tile:
+    // 0 = block is free (unoccupied)
+    // 1 = block is temporarily occupied (by a moving tetromino)
+    // 2 = block is permanently occupied (previous tetrominos)
+
     var field = [];
-
-    // Hope not!
-    var isGameOver = false;
-
-    var gameInterval = null;
 
     for (var i = 0; i < Tetrez.config.dimension.y; ++i) {
         field[i] = [];
 
         for (var j = 0; j < Tetrez.config.dimension.x; ++j) {
-            field[i][j] = 1;
+            field[i][j] = new Tetrez.Tile;
         }
     }
 
-    // Uncomment for field debugging
-    // field = [
-    //     [1, 1, 1, 1],
-    //     [1, 1, 1, 1],
-    //     [1, 1, 1, 1],
-    //     [1, 1, 1, 1],
-    //     [1, 1, 1, 1],
-    //     [1, 1, 1, 1]
-    // ];
+    // Hope not!
+    var isGameOver = false;
 
+    var gameInterval = null;
     var width = window.innerWidth;
     var height = window.innerHeight;
     var aspectRatio = width / height;
@@ -75,7 +68,7 @@
             var x = tetromino.matrix[i].vector[1];
 
             // Break if next field block is occupied or right end of field has reached
-            if (!field[y][x + 1]) {
+            if (!field[y][x + 1] || field[y][x + 1].type !== 0) {
                 canMoveRight = false;
                 break;
             }
@@ -99,7 +92,7 @@
             var x = tetromino.matrix[i].vector[1];
 
             // Break if next field block is occupied or right end of field has reached
-            if (!field[y][x - 1]) {
+            if (!field[y][x - 1] || field[y][x - 1].type !== 0) {
                 canMoveLeft = false;
                 break;
             }
@@ -131,7 +124,7 @@
             var x = tetromino.matrix[i].vector[1];
 
             // Break if next field block is occupied or bottom end of field has reached
-            if (!field[y + 1] || !field[y + 1][x]) {
+            if (!field[y + 1] || field[y + 1][x].type !== 0) {
                 canMoveToBottom = false;
                 break;
             }
@@ -140,7 +133,7 @@
         if (canMoveToBottom) {
             tetromino.moveDown();
         } else {
-            // Cannot move any further, copy last tetrominos visible blocks into field
+            // Cannot move any further, copy tetrominos visible blocks into field
             for (var i = 0; i < tetromino.matrix.length; ++i) {
                 if (!tetromino.matrix[i].visible) {
                     continue;
@@ -149,7 +142,7 @@
                 var y = tetromino.matrix[i].vector[0];
                 var x = tetromino.matrix[i].vector[1];
 
-                field[y][x] = 0;
+                field[y][x] = new Tetrez.Tile(2);
             }
 
             isFalling = false;
@@ -162,9 +155,8 @@
 
             // Quit on game over
             for (var i = 0; i < field[0].length; ++i) {
-                if (field[0][i] === 0) {
+                if (field[0][i].type === 2) {
                     isGameOver = true;
-
                     break;
                 }
             }
@@ -191,7 +183,8 @@
             // Save rotated block for later use (if the whole rotation was successful)
             rotatedMatrix.push(rotatedVector.elements);
 
-            if (!field[y] || !field[y][x]) {
+            // Break if surrounding tiles are occupied or end of field has reached
+            if (!field[y] || !field[y][x] || field[y][x].type !== 0) {
                 canRotate = false;
                 break;
             }
