@@ -53,28 +53,39 @@
         renderer.render(scene, camera);
     };
 
+    var forEachVisibleTetrominoBlock = function(callback) {
+        for (var i = 0; i < tetromino.matrix.length; ++i) {
+            if (!tetromino.matrix[i].visible) continue;
+
+            var y = tetromino.matrix[i].vector[0];
+            var x = tetromino.matrix[i].vector[1];
+
+            if (callback(x, y) === false) break;
+        }
+    };
+
+    var applyTetrominoToField = function(type) {
+        forEachVisibleTetrominoBlock(function(x, y) {
+            field[y][x] = new Tetrez.Tile(type);
+        });
+    };
+
     var isFalling = false;
 
     var moveRight = function() {
         var canMoveRight = true;
 
         // Check for every visible block if move to right is possible
-        for (var i = 0; i < tetromino.matrix.length; ++i) {
-            if (!tetromino.matrix[i].visible) {
-                continue;
-            }
-
-            var y = tetromino.matrix[i].vector[0];
-            var x = tetromino.matrix[i].vector[1];
-
+        forEachVisibleTetrominoBlock(function(x, y) {
             // Break if next field block is occupied or right end of field has reached
-            if (!field[y][x + 1] || field[y][x + 1].type !== 0) {
+            if (!field[y][x + 1] || field[y][x + 1].type === 2) {
                 canMoveRight = false;
-                break;
+                return false;
             }
-        }
+        });
 
         if (canMoveRight) {
+            applyTetrominoToField(1);
             tetromino.moveRight();
         }
     };
@@ -83,22 +94,16 @@
         var canMoveLeft = true;
 
         // Check for every visible block if move to left is possible
-        for (var i = 0; i < tetromino.matrix.length; ++i) {
-            if (!tetromino.matrix[i].visible) {
-                continue;
-            }
-
-            var y = tetromino.matrix[i].vector[0];
-            var x = tetromino.matrix[i].vector[1];
-
+        forEachVisibleTetrominoBlock(function(x, y) {
             // Break if next field block is occupied or right end of field has reached
-            if (!field[y][x - 1] || field[y][x - 1].type !== 0) {
+            if (!field[y][x - 1] || field[y][x - 1].type === 2) {
                 canMoveLeft = false;
-                break;
+                return false;
             }
-        }
+        });
 
         if (canMoveLeft) {
+            applyTetrominoToField(1);
             tetromino.moveLeft();
         }
     };
@@ -115,35 +120,20 @@
         }
 
         // Check for every visible block if move to bottom is possible
-        for (var i = 0; i < tetromino.matrix.length; ++i) {
-            if (!tetromino.matrix[i].visible) {
-                continue;
-            }
-
-            var y = tetromino.matrix[i].vector[0];
-            var x = tetromino.matrix[i].vector[1];
-
+        forEachVisibleTetrominoBlock(function(x, y) {
             // Break if next field block is occupied or bottom end of field has reached
-            if (!field[y + 1] || field[y + 1][x].type !== 0) {
+            if (!field[y + 1] || field[y + 1][x].type === 2) {
                 canMoveToBottom = false;
-                break;
+                return false;
             }
-        }
+        });
 
         if (canMoveToBottom) {
+            applyTetrominoToField(1);
             tetromino.moveDown();
         } else {
             // Cannot move any further, copy tetrominos visible blocks into field
-            for (var i = 0; i < tetromino.matrix.length; ++i) {
-                if (!tetromino.matrix[i].visible) {
-                    continue;
-                }
-
-                var y = tetromino.matrix[i].vector[0];
-                var x = tetromino.matrix[i].vector[1];
-
-                field[y][x] = new Tetrez.Tile(2);
-            }
+            applyTetrominoToField(2);
 
             isFalling = false;
 
@@ -184,13 +174,14 @@
             rotatedMatrix.push(rotatedVector.elements);
 
             // Break if surrounding tiles are occupied or end of field has reached
-            if (!field[y] || !field[y][x] || field[y][x].type !== 0) {
+            if (!field[y] || !field[y][x] || field[y][x].type === 2) {
                 canRotate = false;
                 break;
             }
         }
 
         if (canRotate) {
+            applyTetrominoToField(1);
             tetromino.rotate(rotatedMatrix);
         }
     };
