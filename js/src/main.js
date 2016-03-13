@@ -62,19 +62,10 @@
 
     var isFalling = false;
 
-    var copyTetrominoIntoField = function() {
-        for (var i = 0; i < tetromino.matrix.length; ++i) {
-            var y = tetromino.matrix[i][0];
-            var x = tetromino.matrix[i][1];
-
-            field[y][x] = 0;
-        }
-    };
-
     var moveRight = function() {
         var canMoveRight = true;
 
-        // Check every block if move to right is possible
+        // Check for every block if move to right is possible
         for (var i = 0; i < tetromino.matrix.length; ++i) {
             var y = tetromino.matrix[i][0];
             var x = tetromino.matrix[i][1];
@@ -94,7 +85,7 @@
     var moveLeft = function() {
         var canMoveLeft = true;
 
-        // Check every block if move to left is possible
+        // Check for every block if move to left is possible
         for (var i = 0; i < tetromino.matrix.length; ++i) {
             var y = tetromino.matrix[i][0];
             var x = tetromino.matrix[i][1];
@@ -122,7 +113,7 @@
             isFalling = true;
         }
 
-        // Check every block if move to bottom is possible
+        // Check for every block if move to bottom is possible
         for (var i = 0; i < tetromino.matrix.length; ++i) {
             var y = tetromino.matrix[i][0];
             var x = tetromino.matrix[i][1];
@@ -138,7 +129,12 @@
             tetromino.moveDown();
         } else {
             // Cannot move any further, copy last tetromino position into field
-            copyTetrominoIntoField();
+            for (var i = 0; i < tetromino.matrix.length; ++i) {
+                var y = tetromino.matrix[i][0];
+                var x = tetromino.matrix[i][1];
+
+                field[y][x] = 0;
+            }
 
             isFalling = false;
 
@@ -164,6 +160,34 @@
         }
     };
 
+    var rotate = function() {
+        var canRotate = true;
+        var pivot = $V(tetromino.matrix[1]);
+        var rotatedMatrix = [];
+
+        // Check for every block if rotation is possible
+        for (var i = 0; i < tetromino.matrix.length; ++i) {
+            var rotatedVector = $V(tetromino.matrix[i]).rotate(Math.PI / 2, pivot).round();
+
+            var y = rotatedVector.elements[0];
+            var x = rotatedVector.elements[1];
+
+            // Save rotated block for later use (if the whole rotation was successful)
+            rotatedMatrix.push(rotatedVector.elements);
+
+            if (!field[y] || !field[y][x]) {
+                canRotate = false;
+                break;
+            }
+        }
+
+        if (canRotate) {
+            tetromino.rotate(rotatedMatrix);
+        } else {
+            console.log("CANNOT rotate");
+        }
+    };
+
     moveDown();
     gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
 
@@ -184,6 +208,7 @@
             break;
 
             case 38: // Top
+                rotate();
             break;
 
             case 40: // Bottom

@@ -25,7 +25,7 @@
             });
 
             // Adjust center point (for correct rotations)
-            geometry.translate(0, -1.5, -.5);
+            geometry.translate(-1.5, -1.5, -.5);
 
             var material = new THREE.MeshBasicMaterial({
                 color: 0xffb3ba
@@ -35,7 +35,7 @@
         }());
 
         // Place cube at top
-        this.mesh.position.x = -(Tetrez.config.dimension.x / 2);
+        this.mesh.position.x = -(Tetrez.config.dimension.x / 2 - 1.5);
         this.mesh.position.y = Tetrez.config.dimension.y / 2 - .5;
     };
 
@@ -66,11 +66,13 @@
         this.mesh.position.x -= 1;
     };
 
-    // Tetromino.prototype.rotate = function() {
-    //     var pivot = $V(this.matrix[1]);
+    Tetrez.Tetromino.prototype.rotate = function(rotatedMatrix) {
+        // Apply rotated coordinates
+        for (var i = 0; i < rotatedMatrix.length; ++i) {
+            this.matrix[i][0] = rotatedMatrix[i][0];
+            this.matrix[i][1] = rotatedMatrix[i][1];
+        }
 
-    //     for (var i = 0; i < tetromino.matrix.length; ++i) {
-    //         $V(tetromino.matrix[i]).rotate(Math.PI / 2, pivot).round();
-    //     }
-    // };
+        this.mesh.rotation.z += Math.PI / 2;
+    };
 }());
