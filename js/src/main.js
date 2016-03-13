@@ -65,6 +65,15 @@
     };
 
     var applyTetrominoToField = function(type) {
+        // Clear all temporary positions
+        for (var i = 0; i < field.length; ++i) {
+            for (var j = 0; j < field[i].length; ++j) {
+                if (field[i][j].type === 1) {
+                    field[i][j].type = 0;
+                }
+            }
+        }
+
         forEachVisibleTetrominoBlock(function(x, y) {
             field[y][x] = new Tetrez.Tile(type);
         });
@@ -128,6 +137,12 @@
             }
         });
 
+        // Uncomment for debugging
+        // field.forEach(function(y) {
+        //     console.log(JSON.stringify(y), Math.random());
+        // });
+        // console.log("---------");
+
         if (canMoveToBottom) {
             applyTetrominoToField(1);
             tetromino.moveDown();
@@ -136,12 +151,6 @@
             applyTetrominoToField(2);
 
             isFalling = false;
-
-            // Uncomment for debugging
-            // field.forEach(function(y) {
-            //     console.log(JSON.stringify(y), Math.random());
-            // });
-            // console.log("---------");
 
             // Quit on game over
             for (var i = 0; i < field[0].length; ++i) {
