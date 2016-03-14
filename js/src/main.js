@@ -48,8 +48,28 @@
 
     document.body.appendChild(renderer.domElement);
 
+    var TMPmaterial = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
+    var TMPgeometry = new THREE.BoxGeometry(1, 1, 1);
+
     var render = function() {
-        requestAnimationFrame(render);
+        // Garbage collection (remove all existing meshes from scene)
+        // requestAnimationFrame(render);
+        for (var i = scene.children.length - 1; i >= 0; --i) {
+            scene.remove(scene.children[i]);
+        }
+
+        for (var i = 0; i < field.length; ++i) {
+            for (var j = 0; j < field[i].length; ++j) {
+                if (field[i][j].type !== 0) {
+                    var block = new THREE.Mesh(TMPgeometry, TMPmaterial);
+                    block.translateY(-i);
+                    block.translateX(j);
+
+                    scene.add(block);
+                }
+            }
+        }
+
         renderer.render(scene, camera);
     };
 
@@ -77,6 +97,8 @@
         forEachVisibleTetrominoBlock(function(x, y) {
             field[y][x] = new Tetrez.Tile(type);
         });
+
+        render();
     };
 
     var isFalling = false;
@@ -123,7 +145,7 @@
         // Add a new block if no one is currently falling
         if (!isFalling) {
             tetromino = new Tetrez.Tetromino;
-            scene.add(tetromino.mesh);
+            // scene.add(tetromino.mesh);
 
             isFalling = true;
         }
