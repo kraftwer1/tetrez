@@ -76,8 +76,6 @@
                     }
                 }
             }
-
-            console.log("Blocks meshes on field", lastMeshes.length);
         };
     };
 
@@ -183,6 +181,25 @@
         } else {
             // Cannot move any further, copy tetrominos visible blocks into field
             applyTetrominoToField(2);
+
+            // Complete row detection
+            for (var i = 0; i < field.length; ++i) {
+                for (var j = 0; j < field[i].length; ++j) {
+                    if (field[i][j].type !== 2) break;
+
+                    // Row is complete
+                    if (j === field[i].length - 1) {
+                        var newRow = [];
+
+                        for (var k = 0; k < Tetrez.config.dimension.x; ++k) {
+                            newRow.push(new Tetrez.Tile);
+                        }
+
+                        field.splice(i, 1);
+                        field.unshift(newRow);
+                    }
+                }
+            }
 
             isFalling = false;
 
