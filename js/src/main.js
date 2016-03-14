@@ -48,29 +48,42 @@
 
     document.body.appendChild(renderer.domElement);
 
-    var TMPmaterial = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
-    var TMPgeometry = new THREE.BoxGeometry(1, 1, 1);
+    var drawTetrominos = function() {
+        var material = new THREE.MeshBasicMaterial({ color: 0xffb3ba });
+        var geometry = new THREE.BoxGeometry(1, 1, 1);
 
-    var render = function() {
-        // Garbage collection (remove all existing meshes from scene)
-        // requestAnimationFrame(render);
-        for (var i = scene.children.length - 1; i >= 0; --i) {
-            scene.remove(scene.children[i]);
-        }
+        // Keep references to the lastly rendered meshs blocks
+        // so they can be garbage collected later
+        var lastMeshes = [];
 
-        for (var i = 0; i < field.length; ++i) {
-            for (var j = 0; j < field[i].length; ++j) {
-                if (field[i][j].type !== 0) {
-                    var block = new THREE.Mesh(TMPgeometry, TMPmaterial);
-                    block.translateY(-i);
-                    block.translateX(j);
+        // From now on, this function only removes and redraws
+        drawTetrominos = function() {
+            // Garbage collection (remove all existing meshes from scene)
+            for (var i = lastMeshes.length - 1; i >= 0; --i) {
+                scene.remove(lastMeshes[i]);
+                lastMeshes.splice(lastMeshes.indexOf(i), 1);
+            }
 
-                    scene.add(block);
+            for (var i = 0; i < field.length; ++i) {
+                for (var j = 0; j < field[i].length; ++j) {
+                    if (field[i][j].type !== 0) {
+                        var block = new THREE.Mesh(geometry, material);
+                        block.translateY((Tetrez.config.dimension.y / 2 - .5) - i);
+                        block.translateX(-(Tetrez.config.dimension.x / 2 - .5) + j);
+
+                        scene.add(block);
+                        lastMeshes.push(block);
+                    }
                 }
             }
-        }
 
+            console.log("Blocks meshes on field", lastMeshes.length);
+        };
+    };
+
+    var render = function() {
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     };
 
     var forEachVisibleTetrominoBlock = function(callback) {
@@ -97,8 +110,6 @@
         forEachVisibleTetrominoBlock(function(x, y) {
             field[y][x] = new Tetrez.Tile(type);
         });
-
-        render();
     };
 
     var isFalling = false;
@@ -116,8 +127,9 @@
         });
 
         if (canMoveRight) {
-            applyTetrominoToField(1);
             tetromino.moveRight();
+            applyTetrominoToField(1);
+            drawTetrominos();
         }
     };
 
@@ -134,8 +146,9 @@
         });
 
         if (canMoveLeft) {
-            applyTetrominoToField(1);
             tetromino.moveLeft();
+            applyTetrominoToField(1);
+            drawTetrominos();
         }
     };
 
@@ -145,8 +158,6 @@
         // Add a new block if no one is currently falling
         if (!isFalling) {
             tetromino = new Tetrez.Tetromino;
-            // scene.add(tetromino.mesh);
-
             isFalling = true;
         }
 
@@ -166,8 +177,9 @@
         // console.log("---------");
 
         if (canMoveToBottom) {
-            applyTetrominoToField(1);
             tetromino.moveDown();
+            applyTetrominoToField(1);
+            drawTetrominos();
         } else {
             // Cannot move any further, copy tetrominos visible blocks into field
             applyTetrominoToField(2);
@@ -212,14 +224,16 @@
         }
 
         if (canRotate) {
-            applyTetrominoToField(1);
             tetromino.rotate(rotatedMatrix);
+            applyTetrominoToField(1);
+            drawTetrominos();
         }
     };
 
     moveDown();
     gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
 
+    drawTetrominos();
     render();
 
     var isKeyRepeating = false;
