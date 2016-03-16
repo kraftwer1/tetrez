@@ -78,6 +78,9 @@
     };
 
     var render = function() {
+        // Uncomment for 3D debugging
+        // scene.rotation.y -= 0.01;
+
         renderer.render(scene, camera);
         requestAnimationFrame(render);
     };
@@ -326,17 +329,4 @@
             break;
         };
     });
-
-    // Uncomment for 3D debugging
-    // window.addEventListener("keydown", function(e) {
-    //     switch (e.keyCode) {
-    //         case 37: // Left
-    //             scene.rotation.y -= (Math.PI / 30);
-    //         break;
-
-    //         case 39: // Right
-    //             scene.rotation.y += (Math.PI / 30);
-    //         break;
-    //     };
-    // });
 }());
