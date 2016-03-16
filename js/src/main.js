@@ -1,12 +1,8 @@
-// TODO
-// - Blocks should fall from above the plane
-
 (function() {
     // Init field, multidimensional with types for each tile:
     // 0 = block is free (unoccupied)
     // 1 = block is temporarily occupied (by a moving tetromino)
     // 2 = block is permanently occupied (previous tetrominos)
-
     var field = [];
 
     for (var i = 0; i < Tetrez.config.dimension.y; ++i) {
@@ -77,6 +73,8 @@
                 }
             }
         };
+
+        drawTetrominos();
     };
 
     var render = function() {
@@ -152,69 +150,91 @@
 
     var moveDown = function() {
         var canMoveToBottom = true;
+        var canPlace = true;
 
-        // Add a new block if no one is currently falling
+        // Add a new block if no one is currently falling and return
         if (!isFalling) {
             tetromino = new Tetrez.Tetromino;
-            isFalling = true;
-        }
 
-        // Check for every visible block if move to bottom is possible
-        forEachVisibleTetrominoBlock(function(x, y) {
-            // Break if next field block is occupied or bottom end of field has reached
-            if (!field[y + 1] || field[y + 1][x].type === 2) {
-                canMoveToBottom = false;
-                return false;
+            // Check for every visible block if move to bottom is possible
+            forEachVisibleTetrominoBlock(function(x, y) {
+                // Break if the tetromino can't be placed
+                if (field[y][x].type === 2) {
+                    canPlace = false;
+                    return false;
+                }
+            });
+
+            if (canPlace) {
+                applyTetrominoToField(1);
+                drawTetrominos();
+                isFalling = true;
             }
-        });
-
-        // Uncomment for debugging
-        // field.forEach(function(y) {
-        //     console.log(JSON.stringify(y), Math.random());
-        // });
-        // console.log("---------");
-
-        if (canMoveToBottom) {
-            tetromino.moveDown();
-            applyTetrominoToField(1);
-            drawTetrominos();
         } else {
-            // Cannot move any further, copy tetrominos visible blocks into field
-            applyTetrominoToField(2);
+            // Check for every visible block if move to bottom is possible
+            forEachVisibleTetrominoBlock(function(x, y) {
+                // Break if next field block is occupied or bottom end of field has reached
+                if (!field[y + 1] || field[y + 1][x].type === 2) {
+                    canMoveToBottom = false;
+                    return false;
+                }
+            });
 
-            // Complete row detection
-            for (var i = 0; i < field.length; ++i) {
-                for (var j = 0; j < field[i].length; ++j) {
-                    if (field[i][j].type !== 2) break;
+            // Uncomment for debugging
+            // field.forEach(function(y) {
+            //     console.log(JSON.stringify(y), Math.random());
+            // });
+            // console.log("---------");
 
-                    // Row is complete
-                    if (j === field[i].length - 1) {
-                        var newRow = [];
+            if (canMoveToBottom) {
+                tetromino.moveDown();
+                applyTetrominoToField(1);
+                drawTetrominos();
+            } else {
+                // Cannot move any further, copy tetrominos visible blocks into field
+                applyTetrominoToField(2);
 
-                        for (var k = 0; k < Tetrez.config.dimension.x; ++k) {
-                            newRow.push(new Tetrez.Tile);
+                // Complete row detection
+                for (var i = 0; i < field.length; ++i) {
+                    for (var j = 0; j < field[i].length; ++j) {
+                        if (field[i][j].type !== 2) break;
+
+                        // Row is complete
+                        if (j === field[i].length - 1) {
+                            var newRow = [];
+
+                            for (var k = 0; k < Tetrez.config.dimension.x; ++k) {
+                                newRow.push(new Tetrez.Tile);
+                            }
+
+                            field.splice(i, 1);
+                            field.unshift(newRow);
                         }
-
-                        field.splice(i, 1);
-                        field.unshift(newRow);
                     }
                 }
-            }
 
-            isFalling = false;
-
-            // Quit on game over
-            for (var i = 0; i < field[0].length; ++i) {
-                if (field[0][i].type === 2) {
-                    isGameOver = true;
-                    break;
-                }
+                // Tetromino isn't falling anyore
+                isFalling = false;
             }
+        }
 
-            if (isGameOver) {
-                console.log("Game Over :-(");
-                clearInterval(gameInterval);
+        // Game over if there is a tetromino at the first line
+        for (var i = 0; i < field[0].length; ++i) {
+            if (field[0][i].type === 2) {
+                isGameOver = true;
+                break;
             }
+        }
+
+        // Game over if the tetromino can't be placed on the field
+        if (!canPlace) {
+            isGameOver = true;
+        }
+
+        // Quit on game over
+        if (isGameOver) {
+            console.log("Game Over :-(");
+            clearInterval(gameInterval);
         }
     };
 
@@ -249,8 +269,6 @@
 
     moveDown();
     gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
-
-    drawTetrominos();
     render();
 
     var isKeyRepeating = false;
