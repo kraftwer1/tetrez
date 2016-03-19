@@ -3,11 +3,19 @@
         this.matrix = [
             { vector: [0, 0], visible: true },
             { vector: [0, 1], visible: true },
-            { vector: [0, 2], visible: true },
-            { vector: [1, 1], visible: true },
+            { vector: [0, 2], visible: false },
             { vector: [1, 0], visible: false },
-            { vector: [1, 2], visible: false }
+            { vector: [1, 1], visible: true },
+            { vector: [1, 2], visible: true }
+            // { vector: [0, 0], visible: true },
+            // { vector: [0, 1], visible: true },
+            // { vector: [0, 2], visible: true },
+            // { vector: [1, 0], visible: false },
+            // { vector: [1, 1], visible: true },
+            // { vector: [1, 2], visible: false }
         ];
+
+        this.pivot = this.matrix[1].vector;
     };
 
     Tetrez.Tetromino.prototype.moveDown = function() {
