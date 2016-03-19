@@ -5,7 +5,7 @@
                 x: 10,
                 y: 18
             },
-            initSpeed: 5000
+            initSpeed: 500
         }
     };
 }());

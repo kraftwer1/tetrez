@@ -241,22 +241,17 @@
         }
     };
 
-    var rotation = false;
-
     var rotate = function() {
         var canRotate = true;
-        var pivot = $V(tetromino.pivot);
+        var pivot = $V(tetromino.matrix[tetromino.pivotPosition].vector);
         var rotatedMatrix = [];
 
         // Check for every block if rotation is possible
         for (var i = 0; i < tetromino.matrix.length; ++i) {
-
-            if (rotation) {
-                var rotatedVector = $V(tetromino.matrix[i].vector).rotate(Math.PI / 2, pivot).round();
-            } else {
-                var rotatedVector = $V(tetromino.matrix[i].vector).rotate(Math.PI + (Math.PI / 2), pivot).round();
-            }
-
+            var rotatedVector = $V(tetromino.matrix[i].vector).rotate(
+                tetromino.rotations[tetromino.currentRotationPointer],
+                pivot
+            ).round();
 
             var y = rotatedVector.elements[0];
             var x = rotatedVector.elements[1];
@@ -272,12 +267,6 @@
         }
 
         if (canRotate) {
-            if (rotation) {
-                rotation = false;
-            } else {
-                rotation = true;
-            }
-
             tetromino.rotate(rotatedMatrix);
             applyTetrominoToField(1);
             drawTetrominos();
