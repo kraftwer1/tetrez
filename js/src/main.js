@@ -31,21 +31,15 @@
 
     camera.position.z = viewSize;
 
-    var geometry = new THREE.PlaneGeometry(Tetrez.config.dimension.x, Tetrez.config.dimension.y);
-    var material = new THREE.MeshBasicMaterial({ color: 0xffdfba, side: THREE.DoubleSide });
-    var plane = new THREE.Mesh(geometry, material);
-
     var scene = new THREE.Scene();
-    scene.add(plane);
 
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize(width, height);
-    renderer.setClearColor(0xffffba);
+    renderer.setClearColor(0x404040);
 
     document.body.appendChild(renderer.domElement);
 
     var drawTetrominos = function() {
-        var material = new THREE.MeshBasicMaterial({ color: 0xffb3ba });
         var geometry = new THREE.BoxGeometry(1, 1, 1);
 
         // Keep references to the lastly rendered meshs blocks
@@ -63,7 +57,9 @@
             for (var i = 0; i < field.length; ++i) {
                 for (var j = 0; j < field[i].length; ++j) {
                     if (field[i][j].type !== 0) {
+                        var material = new THREE.MeshBasicMaterial({ color: field[i][j].color });
                         var block = new THREE.Mesh(geometry, material);
+
                         block.translateY((Tetrez.config.dimension.y / 2 - .5) - i);
                         block.translateX(-(Tetrez.config.dimension.x / 2 - .5) + j);
 
@@ -92,7 +88,7 @@
             var y = tetromino.matrix[i].vector[0];
             var x = tetromino.matrix[i].vector[1];
 
-            if (callback(x, y) === false) break;
+            if (callback(x, y, tetromino.color) === false) break;
         }
     };
 
@@ -106,8 +102,8 @@
             }
         }
 
-        forEachVisibleTetrominoBlock(function(x, y) {
-            field[y][x] = new Tetrez.Tile(type);
+        forEachVisibleTetrominoBlock(function(x, y, color) {
+            field[y][x] = new Tetrez.Tile(type, color);
         });
     };
 

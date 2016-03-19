@@ -10,7 +10,8 @@
                 { vector: [1, 2], visible: false }
             ],
             pivotPosition: 1,
-            rotations: [Math.PI / 2]
+            rotations: [Math.PI / 2],
+            color: 0xf16745
         },
         s: {
             matrix: [
@@ -22,7 +23,8 @@
                 { vector: [1, 2], visible: true }
             ],
             pivotPosition: 4,
-            rotations: [Math.PI / 2, Math.PI * 1.5]
+            rotations: [Math.PI / 2, Math.PI * 1.5],
+            color: 0xffc65d
         },
         sInverted: {
             matrix: [
@@ -34,7 +36,8 @@
                 { vector: [1, 2], visible: false }
             ],
             pivotPosition: 4,
-            rotations: [Math.PI / 2, Math.PI * 1.5]
+            rotations: [Math.PI / 2, Math.PI * 1.5],
+            color: 0xffc65d
         },
         l: {
             matrix: [
@@ -46,7 +49,8 @@
                 { vector: [1, 2], visible: true }
             ],
             pivotPosition: 4,
-            rotations: [Math.PI / 2]
+            rotations: [Math.PI / 2],
+            color: 0x7bc8a4
         },
         lInverted: {
             matrix: [
@@ -58,7 +62,9 @@
                 { vector: [1, 2], visible: true }
             ],
             pivotPosition: 4,
-            rotations: [Math.PI / 2]
+            rotations: [Math.PI / 2],
+            color: 0x7bc8a4
+
         },
         i: {
             matrix: [
@@ -68,7 +74,8 @@
                 { vector: [0, 3], visible: true }
             ],
             pivotPosition: 1,
-            rotations: [Math.PI * 1.5, Math.PI / 2]
+            rotations: [Math.PI * 1.5, Math.PI / 2],
+            color: 0x4cc3d9
         },
         o: {
             matrix: [
@@ -78,7 +85,8 @@
                 { vector: [1, 1], visible: true }
             ],
             pivotPosition: 0,
-            rotations: []
+            rotations: [],
+            color: 0x93648d
         }
     };
 
