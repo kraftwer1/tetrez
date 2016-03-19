@@ -1,6 +1,6 @@
 (function() {
     var blocks = {
-        T: {
+        t: {
             matrix: [
                 { vector: [0, 0], visible: true },
                 { vector: [0, 1], visible: true },
@@ -9,11 +9,10 @@
                 { vector: [1, 1], visible: true },
                 { vector: [1, 2], visible: false }
             ],
-
             pivotPosition: 1,
             rotations: [Math.PI / 2]
         },
-        S: {
+        s: {
             matrix: [
                 { vector: [0, 0], visible: true },
                 { vector: [0, 1], visible: true },
@@ -22,9 +21,64 @@
                 { vector: [1, 1], visible: true },
                 { vector: [1, 2], visible: true }
             ],
-
             pivotPosition: 4,
             rotations: [Math.PI / 2, Math.PI * 1.5]
+        },
+        sInverted: {
+            matrix: [
+                { vector: [0, 0], visible: false },
+                { vector: [0, 1], visible: true },
+                { vector: [0, 2], visible: true },
+                { vector: [1, 0], visible: true },
+                { vector: [1, 1], visible: true },
+                { vector: [1, 2], visible: false }
+            ],
+            pivotPosition: 4,
+            rotations: [Math.PI / 2, Math.PI * 1.5]
+        },
+        l: {
+            matrix: [
+                { vector: [0, 0], visible: false },
+                { vector: [0, 1], visible: false },
+                { vector: [0, 2], visible: true },
+                { vector: [1, 0], visible: true },
+                { vector: [1, 1], visible: true },
+                { vector: [1, 2], visible: true }
+            ],
+            pivotPosition: 4,
+            rotations: [Math.PI / 2]
+        },
+        lInverted: {
+            matrix: [
+                { vector: [0, 0], visible: true },
+                { vector: [0, 1], visible: false },
+                { vector: [0, 2], visible: false },
+                { vector: [1, 0], visible: true },
+                { vector: [1, 1], visible: true },
+                { vector: [1, 2], visible: true }
+            ],
+            pivotPosition: 4,
+            rotations: [Math.PI / 2]
+        },
+        i: {
+            matrix: [
+                { vector: [0, 0], visible: true },
+                { vector: [0, 1], visible: true },
+                { vector: [0, 2], visible: true },
+                { vector: [0, 3], visible: true }
+            ],
+            pivotPosition: 1,
+            rotations: [Math.PI * 1.5, Math.PI / 2]
+        },
+        o: {
+            matrix: [
+                { vector: [0, 0], visible: true },
+                { vector: [0, 1], visible: true },
+                { vector: [1, 0], visible: true },
+                { vector: [1, 1], visible: true }
+            ],
+            pivotPosition: 0,
+            rotations: []
         }
     };
 
