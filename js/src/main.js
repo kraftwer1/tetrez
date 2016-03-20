@@ -34,6 +34,17 @@
     var scene = new THREE.Scene();
     var renderer = new THREE.WebGLRenderer();
 
+    var ambientLight = new THREE.AmbientLight(0xffffff);
+    scene.add(ambientLight);
+
+    // Light from above
+    var directionalLight = new THREE.DirectionalLight(0xffffff);
+    directionalLight.position.y = Tetrez.config.dimension.y;
+    scene.add(directionalLight);
+
+    var group = new THREE.Group();
+    scene.add(group);
+
     // Uncomment to add plane
     // var geometry = new THREE.PlaneGeometry(Tetrez.config.dimension.x, Tetrez.config.dimension.y);
     // var material = new THREE.MeshBasicMaterial({ color: 0xffdfba, side: THREE.DoubleSide });
@@ -54,34 +65,37 @@
     var drawTetrominos = function() {
         // Garbage collection (remove all existing meshes from scene)
         for (var i = lastMeshes.length - 1; i >= 0; --i) {
-            scene.remove(lastMeshes[i]);
+            group.remove(lastMeshes[i]);
             lastMeshes.splice(lastMeshes.indexOf(i), 1);
         }
 
         for (var i = 0; i < field.length; ++i) {
             for (var j = 0; j < field[i].length; ++j) {
                 if (field[i][j].type !== 0) {
-                    var material = new THREE.MeshBasicMaterial({ color: field[i][j].color });
+                    var material = new THREE.MeshLambertMaterial({ color: field[i][j].color });
                     var block = new THREE.Mesh(geometry, material);
 
                     block.translateY((Tetrez.config.dimension.y / 2 - .5) - i);
                     block.translateX(-(Tetrez.config.dimension.x / 2 - .5) + j);
 
-                    scene.add(block);
+                    group.add(block);
                     lastMeshes.push(block);
                 }
             }
         }
     };
 
-    var threeSixty = Math.PI * 2;
-    var step = threeSixty / 1000;
+    // group.rotation.x = Math.PI / 4;
+    // group.rotation.y = Math.PI / 4;
+
+    // var threeSixty = Math.PI * 2;
+    // var step = threeSixty / 1000;
 
     var render = function() {
-        // scene.rotation.y += step;
+        // group.rotation.y += step;
 
-        // if (scene.rotation.y > threeSixty) {
-        //     scene.rotation.y = step;
+        // if (group.rotation.y > threeSixty) {
+        //     group.rotation.y = step;
         // }
 
         renderer.render(scene, camera);
@@ -286,7 +300,7 @@
         if (isGameOver) return;
 
         // Between 90° - and 270° to confuse the user less
-        var isControlsInverted = (scene.rotation.y >= Math.PI / 2 && scene.rotation.y < Math.PI * 1.5);
+        var isControlsInverted = (group.rotation.y >= Math.PI / 2 && group.rotation.y < Math.PI * 1.5);
 
         switch (e.keyCode) {
             case 37: // Left
