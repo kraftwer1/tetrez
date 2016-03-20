@@ -80,23 +80,19 @@
         }
     };
 
-    // group.rotation.x = Math.PI / 4;
-    // group.rotation.y = Math.PI / 4;
-
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000);
     document.body.appendChild(renderer.domElement);
 
-    // var threeSixty = Math.PI * 2;
-    // var step = threeSixty / 1000;
+    var rotationStep = Math.PI * 2 / 2500
+    var nextRotationStop = 0;
 
     var render = function() {
-        // group.rotation.y += step;
-
-        // if (group.rotation.y > threeSixty) {
-        //     group.rotation.y = step;
-        // }
+        if (group.rotation.x < nextRotationStop && group.rotation.y < nextRotationStop) {
+            group.rotation.x += rotationStep;       
+            group.rotation.y += rotationStep;       
+        }
 
         renderer.render(scene, camera);
         requestAnimationFrame(render);
@@ -211,6 +207,8 @@
                 applyTetrominoToField(1);
                 drawTetrominos();
             } else {
+                var hasCompletedOneOrMoreRows = false;
+
                 // Cannot move any further, copy tetrominos visible blocks into field
                 applyTetrominoToField(2);
 
@@ -230,7 +228,19 @@
                             field.splice(i, 1);
                             field.unshift(newRow);
 
+                            hasCompletedOneOrMoreRows = true;
+
                             ++completedRows;
+                        }
+                    }
+                }
+
+                if (hasCompletedOneOrMoreRows) {
+                    if (nextRotationStop === 0) {
+                        nextRotationStop = Math.PI / 16;
+                    } else {
+                        if (nextRotationStop !== Math.PI / 4) {
+                            nextRotationStop = nextRotationStop * 2;
                         }
                     }
                 }
