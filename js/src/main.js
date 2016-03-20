@@ -16,6 +16,7 @@
     // Hope not!
     var isGameOver = false;
 
+    var completedRows = 0;
     var gameInterval = null;
     var width = window.innerWidth;
     var height = window.innerHeight;
@@ -228,6 +229,8 @@
 
                             field.splice(i, 1);
                             field.unshift(newRow);
+
+                            ++completedRows;
                         }
                     }
                 }
