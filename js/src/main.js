@@ -372,4 +372,38 @@
             break;
         };
     });
+
+    var hammer = new Hammer(document.body);
+    var isPressing = false;
+
+    hammer.on("swipe", function(e) {
+        switch (e.direction) {
+            case 2: // Left
+                moveLeft();
+            break;
+
+            case 4: // Right
+                moveRight();
+            break;
+        }
+    });
+
+    hammer.on("tap", function() {
+        rotate();
+    });
+
+    hammer.on("press", function() {
+        isPressing = true;
+    });
+
+    hammer.on("pressup", function() {
+        isPressing = false;
+    });
+
+    // Move down while pressing
+    setInterval(function() {
+        if (isPressing) {
+            moveDown();
+        }
+    }, 100);
 }());
