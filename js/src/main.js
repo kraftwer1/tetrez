@@ -245,6 +245,9 @@
                     }
                 }
 
+                // TODO: Also add this for keyboard
+                isPressing = false;
+
                 // Tetromino isn't falling anyore
                 isFalling = false;
             }
@@ -375,6 +378,7 @@
 
     var hammer = new Hammer(document.body);
     var isPressing = false;
+    var nrOfKeyRepetitions = 0;
 
     hammer.on("swipe", function(e) {
         switch (e.direction) {
