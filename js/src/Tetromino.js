@@ -100,6 +100,11 @@
             this[key] = randomBlock[key];
         }
 
+        // Place tetromino horizontally centered
+        for (var i = 0; i < this.matrix.length; ++i) {
+            this.matrix[i].vector[1] = this.matrix[i].vector[1] + Math.round(Tetrez.config.dimension.x / 2) - 2;
+        };
+
         this.currentRotationPointer = 0;
     };
 
