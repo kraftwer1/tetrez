@@ -41,7 +41,7 @@
     // scene.add(plane);
 
     renderer.setSize(width, height);
-    renderer.setClearColor(0x404040);
+    renderer.setClearColor(0x000000);
 
     document.body.appendChild(renderer.domElement);
 

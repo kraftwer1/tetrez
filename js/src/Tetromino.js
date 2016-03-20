@@ -11,7 +11,7 @@
             ],
             pivotPosition: 1,
             rotations: [Math.PI / 2],
-            color: 0xf16745
+            color: 0xfde6d0
         },
         s: {
             matrix: [
@@ -24,7 +24,7 @@
             ],
             pivotPosition: 4,
             rotations: [Math.PI / 2, Math.PI * 1.5],
-            color: 0xffc65d
+            color: 0xfddbb3
         },
         sInverted: {
             matrix: [
@@ -37,7 +37,7 @@
             ],
             pivotPosition: 4,
             rotations: [Math.PI / 2, Math.PI * 1.5],
-            color: 0xffc65d
+            color: 0xeba69d
         },
         l: {
             matrix: [
@@ -50,7 +50,7 @@
             ],
             pivotPosition: 4,
             rotations: [Math.PI / 2],
-            color: 0x7bc8a4
+            color: 0xc7676f
         },
         lInverted: {
             matrix: [
@@ -63,7 +63,7 @@
             ],
             pivotPosition: 4,
             rotations: [Math.PI / 2],
-            color: 0x7bc8a4
+            color: 0x8f3b50
 
         },
         i: {
@@ -75,7 +75,7 @@
             ],
             pivotPosition: 1,
             rotations: [Math.PI * 1.5, Math.PI / 2],
-            color: 0x4cc3d9
+            color: 0x441833
         },
         o: {
             matrix: [
@@ -86,7 +86,7 @@
             ],
             pivotPosition: 0,
             rotations: [],
-            color: 0x93648d
+            color: 0xffffff
         }
     };
 
