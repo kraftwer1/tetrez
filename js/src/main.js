@@ -32,7 +32,6 @@
     camera.position.z = viewSize;
 
     var scene = new THREE.Scene();
-    var renderer = new THREE.WebGLRenderer();
 
     var ambientLight = new THREE.AmbientLight(0xffffff);
     scene.add(ambientLight);
@@ -50,11 +49,6 @@
     // var material = new THREE.MeshBasicMaterial({ color: 0xffdfba, side: THREE.DoubleSide });
     // var plane = new THREE.Mesh(geometry, material);
     // scene.add(plane);
-
-    renderer.setSize(width, height);
-    renderer.setClearColor(0x000000);
-
-    document.body.appendChild(renderer.domElement);
 
     var geometry = new THREE.BoxGeometry(1, 1, 1);
 
@@ -87,6 +81,11 @@
 
     // group.rotation.x = Math.PI / 4;
     // group.rotation.y = Math.PI / 4;
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x000000);
+    document.body.appendChild(renderer.domElement);
 
     // var threeSixty = Math.PI * 2;
     // var step = threeSixty / 1000;
