@@ -91,11 +91,15 @@
     document.body.appendChild(renderer.domElement);
 
     var rotationStep = Math.PI * 2 / 2500
-    var nextRotationStop = 0;
+    var nextRotationStopX = 0;
+    var nextRotationStopY = 0;
 
     var render = function() {
-        if (group.rotation.x < nextRotationStop && group.rotation.y < nextRotationStop) {
+        if (group.rotation.x < nextRotationStopX) {
             group.rotation.x += rotationStep;       
+        }
+
+        if (group.rotation.y < nextRotationStopY) {
             group.rotation.y += rotationStep;       
         }
 
@@ -212,8 +216,6 @@
                 applyTetrominoToField(1);
                 drawTetrominos();
             } else {
-                var hasCompletedOneOrMoreRows = false;
-
                 // Cannot move any further, copy tetrominos visible blocks into field
                 applyTetrominoToField(2);
 
@@ -236,16 +238,23 @@
                             hasCompletedOneOrMoreRows = true;
 
                             ++completedRows;
-                        }
-                    }
-                }
 
-                if (hasCompletedOneOrMoreRows) {
-                    if (nextRotationStop === 0) {
-                        nextRotationStop = Math.PI / 16;
-                    } else {
-                        if (nextRotationStop !== Math.PI / 4) {
-                            nextRotationStop = nextRotationStop * 2;
+                            switch (completedRows) {
+                                case 1:
+                                    nextRotationStopX += Math.PI / 8;
+                                    nextRotationStopY += Math.PI / 8;
+                                break;
+
+                                case 2:
+                                    nextRotationStopX += Math.PI / 8;
+                                    nextRotationStopY += Math.PI / 8;
+                                break;
+
+                                case 3:
+                                    nextRotationStopX += Math.PI / 8;
+                                    nextRotationStopY += Math.PI / 8;
+                                break;
+                            }
                         }
                     }
                 }
@@ -362,21 +371,9 @@
         if (isGameOver) return;
 
         switch (e.keyCode) {
-            case 37: // Left
-            break;
-
-            case 39: // Right
-            break;
-
-            case 38: // Top
-            break;
-
             case 40: // Bottom
                 gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
                 isKeyRepeating = false;
-            break;
-
-            case 32: // Space
             break;
         };
     });
