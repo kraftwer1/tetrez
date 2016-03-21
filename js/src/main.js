@@ -80,7 +80,7 @@
         }
     };
 
-    var renderer = new THREE.WebGLRenderer();
+    var renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000);
     document.body.appendChild(renderer.domElement);
