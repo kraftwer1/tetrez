@@ -240,17 +240,17 @@
                             ++completedRows;
 
                             switch (completedRows) {
-                                case 1:
+                                case 4:
                                     nextRotationStopX += Math.PI / 8;
                                     nextRotationStopY += Math.PI / 8;
                                 break;
 
-                                case 2:
+                                case 8:
                                     nextRotationStopX += Math.PI / 8;
                                     nextRotationStopY += Math.PI / 8;
                                 break;
 
-                                case 3:
+                                case 12:
                                     nextRotationStopX += Math.PI / 8;
                                     nextRotationStopY += Math.PI / 8;
                                 break;
