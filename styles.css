@@ -1,7 +1,31 @@
+@font-face {
+    font-family: Julius;
+    src: url(fonts/julius.ttf);
+}
+
 body {
     margin: 0;
+    font-family: Julius;
 }
 
 canvas {
     vertical-align: middle;
+}
+
+#text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    color: white;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    font-size: 25vw;
+    transition: opacity 1s;
+}
+
+.transparent {
+    opacity: 0;
 }

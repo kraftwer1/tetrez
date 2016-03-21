@@ -30,6 +30,11 @@
         -(viewSize / 2)
     );
 
+    // Hide logo
+    setTimeout(function() {
+        document.getElementById("text").classList.add("transparent");
+    }, 1000);
+
     camera.position.z = viewSize;
 
     var scene = new THREE.Scene();
