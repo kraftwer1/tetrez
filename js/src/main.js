@@ -24,17 +24,14 @@
     var viewSize = Tetrez.config.dimension.y;
     var tetromino = null;
 
+    var scene = new THREE.Scene();
+
     var camera = new THREE.OrthographicCamera(
         -(aspectRatio * viewSize / 2),
         (aspectRatio * viewSize / 2),
         (viewSize / 2),
         -(viewSize / 2)
     );
-
-    // Hide logo
-    setTimeout(function() {
-        document.getElementById("text").classList.add("transparent");
-    }, 1000);
 
     camera.position.z = viewSize;
 
@@ -43,7 +40,21 @@
         event.preventDefault();
     });
 
-    var scene = new THREE.Scene();
+    var startGame = function() {
+        textElement.addEventListener("transitionend", function(e) {
+            e.target.style.display = "none";
+        });
+
+        textElement.classList.add("transparent");
+        moveDown();
+        gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
+
+        // Make sure the game can be started only once
+        textElement.removeEventListener("click", startGame);
+    };
+
+    var textElement = document.getElementById("text");
+    textElement.addEventListener("click", startGame);
 
     var ambientLight = new THREE.AmbientLight(0xffffff);
     scene.add(ambientLight);
@@ -326,8 +337,6 @@
         }
     };
 
-    moveDown();
-    gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
     render();
 
     var isKeyRepeating = false;
@@ -385,7 +394,7 @@
         };
     });
 
-    var hammer = new Hammer(document.body);
+    var hammer = new Hammer(document.getElementsByTagName("canvas")[0]);
     var isPressing = false;
     var nrOfKeyRepetitions = 0;
 
