@@ -41,20 +41,20 @@
     });
 
     var startGame = function() {
-        textElement.addEventListener("transitionend", function(e) {
+        screenElement.addEventListener("transitionend", function(e) {
             e.target.style.display = "none";
         });
 
-        textElement.classList.add("transparent");
+        screenElement.classList.add("transparent");
         moveDown();
         gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
 
         // Make sure the game can be started only once
-        textElement.removeEventListener("click", startGame);
+        screenElement.removeEventListener("click", startGame);
     };
 
-    var textElement = document.getElementById("text");
-    textElement.addEventListener("click", startGame);
+    var screenElement = document.getElementById("screen");
+    screenElement.addEventListener("click", startGame);
 
     var ambientLight = new THREE.AmbientLight(0xffffff);
     scene.add(ambientLight);
@@ -258,17 +258,17 @@
                             ++completedRows;
 
                             switch (completedRows) {
-                                case 4:
+                                case 1:
                                     nextRotationStopX += Math.PI / 8;
                                     nextRotationStopY += Math.PI / 8;
                                 break;
 
-                                case 8:
+                                case 2:
                                     nextRotationStopX += Math.PI / 8;
                                     nextRotationStopY += Math.PI / 8;
                                 break;
 
-                                case 12:
+                                case 3:
                                     nextRotationStopX += Math.PI / 8;
                                     nextRotationStopY += Math.PI / 8;
                                 break;
