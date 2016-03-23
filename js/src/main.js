@@ -22,6 +22,7 @@
     var height = window.innerHeight;
     var aspectRatio = width / height;
     var viewSize = Tetrez.config.dimension.y;
+    var tetromino = null;
 
     var camera = new THREE.OrthographicCamera(
         -(aspectRatio * viewSize / 2),
