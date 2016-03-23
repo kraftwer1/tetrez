@@ -37,7 +37,7 @@ canvas {
 }
 
 #title {
-    font-size: 15vw;
+    font-size: 20vw;
 }
 
 #title > span:nth-of-type(1) { color: #fde6d0; }
@@ -46,13 +46,6 @@ canvas {
 #title > span:nth-of-type(4) { color: #c7676f; }
 #title > span:nth-of-type(5) { color: #8f3b50; }
 #title > span:nth-of-type(6) { color: #441833; }
-
-#start {
-    font-size: 5vw;
-    border: 2px solid white;
-    padding: 0 10px;
-    background-color: rgba(255, 255, 255, .15);
-}
 
 .transparent {
     opacity: 0;
