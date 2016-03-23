@@ -22,7 +22,7 @@ canvas {
     right: 0;
     top: 0;
     bottom: 0;
-    font-size: 25vw;
+    font-size: 15vw;
     transition: opacity 1s;
 }
 
