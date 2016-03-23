@@ -38,6 +38,11 @@
 
     camera.position.z = viewSize;
 
+    // Prevent elastic scrolling (e.g. iOS Safari)
+    document.body.addEventListener("touchmove", function(e) {
+        event.preventDefault();
+    });
+
     var scene = new THREE.Scene();
 
     var ambientLight = new THREE.AmbientLight(0xffffff);
