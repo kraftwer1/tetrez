@@ -89,6 +89,7 @@
     var renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000);
+    renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
     document.body.appendChild(renderer.domElement);
 
     var rotationStep = Math.PI * 2 / 2500
