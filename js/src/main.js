@@ -1,15 +1,4 @@
 (function() {
-    // Init field, multidimensional with types for each tile:
-    var field = [];
-
-    for (var i = 0; i < Tetrez.config.dimension.y; ++i) {
-        field[i] = [];
-
-        for (var j = 0; j < Tetrez.config.dimension.x; ++j) {
-            field[i][j] = new Tetrez.Tile;
-        }
-    }
-
     // Hope not!
     var isGameOver = false;
 
@@ -83,10 +72,10 @@
             lastMeshes.splice(lastMeshes.indexOf(i), 1);
         }
 
-        for (var i = 0; i < field.length; ++i) {
-            for (var j = 0; j < field[i].length; ++j) {
-                if (field[i][j].type !== 0) {
-                    var material = new THREE.MeshLambertMaterial({ color: field[i][j].color });
+        for (var i = 0; i < Tetrez.field.length; ++i) {
+            for (var j = 0; j < Tetrez.field[i].length; ++j) {
+                if (Tetrez.field[i][j].type !== 0) {
+                    var material = new THREE.MeshLambertMaterial({ color: Tetrez.field[i][j].color });
                     var block = new THREE.Mesh(geometry, material);
 
                     block.translateY((Tetrez.config.dimension.y / 2 - .5) - i);
@@ -135,16 +124,16 @@
 
     var applyTetrominoToField = function(type) {
         // Clear all temporary positions
-        for (var i = 0; i < field.length; ++i) {
-            for (var j = 0; j < field[i].length; ++j) {
-                if (field[i][j].type === 1) {
-                    field[i][j].type = 0;
+        for (var i = 0; i < Tetrez.field.length; ++i) {
+            for (var j = 0; j < Tetrez.field[i].length; ++j) {
+                if (Tetrez.field[i][j].type === 1) {
+                    Tetrez.field[i][j].type = 0;
                 }
             }
         }
 
         forEachVisibleTetrominoBlock(function(x, y, color) {
-            field[y][x] = new Tetrez.Tile(type, color);
+            Tetrez.field[y][x] = new Tetrez.Tile(type, color);
         });
     };
 
@@ -156,7 +145,7 @@
         // Check for every visible block if move to right is possible
         forEachVisibleTetrominoBlock(function(x, y) {
             // Break if next field block is occupied or right end of field has reached
-            if (!field[y][x + 1] || field[y][x + 1].type === 2) {
+            if (!Tetrez.field[y][x + 1] || Tetrez.field[y][x + 1].type === 2) {
                 canMoveRight = false;
                 return false;
             }
@@ -175,7 +164,7 @@
         // Check for every visible block if move to left is possible
         forEachVisibleTetrominoBlock(function(x, y) {
             // Break if next field block is occupied or right end of field has reached
-            if (!field[y][x - 1] || field[y][x - 1].type === 2) {
+            if (!Tetrez.field[y][x - 1] || Tetrez.field[y][x - 1].type === 2) {
                 canMoveLeft = false;
                 return false;
             }
@@ -199,7 +188,7 @@
             // Check for every visible block if move to bottom is possible
             forEachVisibleTetrominoBlock(function(x, y) {
                 // Break if the tetromino can't be placed
-                if (field[y][x].type === 2) {
+                if (Tetrez.field[y][x].type === 2) {
                     canPlace = false;
                     return false;
                 }
@@ -214,7 +203,7 @@
             // Check for every visible block if move to bottom is possible
             forEachVisibleTetrominoBlock(function(x, y) {
                 // Break if next field block is occupied or bottom end of field has reached
-                if (!field[y + 1] || field[y + 1][x].type === 2) {
+                if (!Tetrez.field[y + 1] || Tetrez.field[y + 1][x].type === 2) {
                     canMoveToBottom = false;
                     return false;
                 }
@@ -235,20 +224,20 @@
                 applyTetrominoToField(2);
 
                 // Complete row detection
-                for (var i = 0; i < field.length; ++i) {
-                    for (var j = 0; j < field[i].length; ++j) {
-                        if (field[i][j].type !== 2) break;
+                for (var i = 0; i < Tetrez.field.length; ++i) {
+                    for (var j = 0; j < Tetrez.field[i].length; ++j) {
+                        if (Tetrez.field[i][j].type !== 2) break;
 
                         // Row is complete
-                        if (j === field[i].length - 1) {
+                        if (j === Tetrez.field[i].length - 1) {
                             var newRow = [];
 
                             for (var k = 0; k < Tetrez.config.dimension.x; ++k) {
                                 newRow.push(new Tetrez.Tile);
                             }
 
-                            field.splice(i, 1);
-                            field.unshift(newRow);
+                            Tetrez.field.splice(i, 1);
+                            Tetrez.field.unshift(newRow);
 
                             hasCompletedOneOrMoreRows = true;
 
@@ -283,8 +272,8 @@
         }
 
         // Game over if there is a tetromino at the first line
-        for (var i = 0; i < field[0].length; ++i) {
-            if (field[0][i].type === 2) {
+        for (var i = 0; i < Tetrez.field[0].length; ++i) {
+            if (Tetrez.field[0][i].type === 2) {
                 isGameOver = true;
                 break;
             }
@@ -321,7 +310,7 @@
             rotatedMatrix.push(rotatedVector.elements);
 
             // Break if surrounding tiles are occupied or end of field has reached
-            if (!field[y] || !field[y][x] || field[y][x].type === 2) {
+            if (!Tetrez.field[y] || !Tetrez.field[y][x] || Tetrez.field[y][x].type === 2) {
                 canRotate = false;
                 break;
             }
