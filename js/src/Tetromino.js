@@ -64,7 +64,6 @@
             pivotPosition: 4,
             rotations: [Math.PI / 2],
             color: 0x8f3b50
-
         },
         i: {
             matrix: [
@@ -140,6 +139,17 @@
             this.currentRotationPointer = 0;
         } else {
             ++this.currentRotationPointer;
+        }
+    };
+
+    Tetrez.Tetromino.prototype.forEachVisibleBlock = function(callback) {
+        for (var i = 0; i < this.matrix.length; ++i) {
+            if (!this.matrix[i].visible) continue;
+
+            var y = this.matrix[i].vector[0];
+            var x = this.matrix[i].vector[1];
+
+            if (callback(x, y, this.color) === false) break;
         }
     };
 }());
