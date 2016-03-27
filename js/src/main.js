@@ -1,8 +1,5 @@
 (function() {
     // Init field, multidimensional with types for each tile:
-    // 0 = block is free (unoccupied)
-    // 1 = block is temporarily occupied (by a moving tetromino)
-    // 2 = block is permanently occupied (previous tetrominos)
     var field = [];
 
     for (var i = 0; i < Tetrez.config.dimension.y; ++i) {
