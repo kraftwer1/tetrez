@@ -21,4 +21,6 @@
 
     var screenElement = document.getElementById("screen");
     screenElement.addEventListener("click", startGame);
+    
+    if (Tetrez.config.isDebugMode) screenElement.click();
 }());
