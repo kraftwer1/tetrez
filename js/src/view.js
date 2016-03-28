@@ -90,9 +90,9 @@
             }
         },
 
-        rotate: function(x, y) {
-            nextRotationStopX += x;
-            nextRotationStopY += y;
+        rotate: function(rotation) {
+            if (rotation.x) nextRotationStopX += rotation.x;
+            if (rotation.y) nextRotationStopY += rotation.y;
         }
     };
 }());

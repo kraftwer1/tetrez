@@ -15,15 +15,24 @@
     Tetrez.field.onRowComplete = function(completedRows) {
         switch (completedRows) {
             case 1:
-                Tetrez.view.rotate(Math.PI / 8, Math.PI / 8);
+                Tetrez.view.rotate({
+                    x: Math.PI / 8,
+                    y: Math.PI / 8
+                });
             break;
 
             case 2:
-                Tetrez.view.rotate(Math.PI / 8, Math.PI / 8);
+                Tetrez.view.rotate({
+                    x: Math.PI / 8,
+                    y: Math.PI / 8
+                });
             break;
 
             case 3:
-                Tetrez.view.rotate(Math.PI / 8, Math.PI / 8);
+                Tetrez.view.rotate({
+                    x: Math.PI / 8,
+                    y: Math.PI / 8
+                });
             break;
         }
     };
