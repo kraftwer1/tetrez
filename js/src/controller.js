@@ -4,8 +4,6 @@
     var completedRows = 0;
     var hasFallingTetromino = false;
     var isPressingDown = false;
-    var isKeyRepeating = false;
-    var hammer = new Hammer(document.getElementById("canvas"));
 
     var resetGameInterval = function() {
         clearInterval(gameInterval);
@@ -105,94 +103,99 @@
         }
     };
 
-    window.addEventListener("keydown", function(e) {
-        if (Tetrez.isGameOver) return;
-
-        // Between 90° - and 270° to confuse the user less
-        // var isControlsInverted = (group.rotation.y >= Math.PI / 2 && group.rotation.y < Math.PI * 1.5);
-
-        switch (e.keyCode) {
-            case 37: // Left
-                // if (isControlsInverted) {
-                    // moveRight();
-                // } else {
-                    moveLeft();
-                // }
-            break;
-
-            case 39: // Right
-                // if (isControlsInverted) {
-                    // moveLeft();
-                // } else {
-                    moveRight();
-                // }
-            break;
-
-            case 38: // Top
-                rotate();
-            break;
-
-            case 40: // Bottom
-                if (!isKeyRepeating) {
-                    isPressingDown = true;
-                }
-
-                isKeyRepeating = true;
-            break;
-
-            case 32: // Space
-            break;
-        };
-    });
-
-    window.addEventListener("keyup", function(e) {
-        if (Tetrez.isGameOver) return;
-
-        switch (e.keyCode) {
-            case 40: // Bottom
-                isPressingDown = false;
-                isKeyRepeating = false;
-
-                resetGameInterval();
-            break;
-        };
-    });
-
-    hammer.on("swipe", function(e) {
-        switch (e.direction) {
-            case 2: // Left
-                moveLeft();
-            break;
-
-            case 4: // Right
-                moveRight();
-            break;
-        }
-    });
-
-    hammer.on("tap", function() {
-        rotate();
-    });
-
-    hammer.on("press", function() {
-        isPressingDown = true;
-    });
-
-    hammer.on("pressup", function() {
-        isPressingDown = false;
-        resetGameInterval();
-    });
-
-    // Move down while pressing
-    setInterval(function() {
-        if (isPressingDown) {
-            clearInterval(gameInterval);
-            moveDown();
-        }
-    }, 75);
-
     Tetrez.controller = {
-        start: function() {
+        init: function() {
+            var isKeyRepeating = false;
+            var hammer = new Hammer(document.getElementById("canvas"));
+
+            window.addEventListener("keydown", function(e) {
+                if (Tetrez.isGameOver) return;
+
+                // Between 90° - and 270° to confuse the user less
+                // var isControlsInverted = (group.rotation.y >= Math.PI / 2 && group.rotation.y < Math.PI * 1.5);
+
+                switch (e.keyCode) {
+                    case 37: // Left
+                        // if (isControlsInverted) {
+                            // moveRight();
+                        // } else {
+                            moveLeft();
+                        // }
+                    break;
+
+                    case 39: // Right
+                        // if (isControlsInverted) {
+                            // moveLeft();
+                        // } else {
+                            moveRight();
+                        // }
+                    break;
+
+                    case 38: // Top
+                        rotate();
+                    break;
+
+                    case 40: // Bottom
+                        if (!isKeyRepeating) {
+                            isPressingDown = true;
+                        }
+
+                        isKeyRepeating = true;
+                    break;
+
+                    case 32: // Space
+                    break;
+                };
+            });
+
+            window.addEventListener("keyup", function(e) {
+                if (Tetrez.isGameOver) return;
+
+                switch (e.keyCode) {
+                    case 40: // Bottom
+                        isPressingDown = false;
+                        isKeyRepeating = false;
+
+                        resetGameInterval();
+                    break;
+                };
+            });
+
+            hammer.on("swipe", function(e) {
+                switch (e.direction) {
+                    case 2: // Left
+                        moveLeft();
+                    break;
+
+                    case 4: // Right
+                        moveRight();
+                    break;
+                }
+            });
+
+            hammer.on("tap", function() {
+                rotate();
+            });
+
+            hammer.on("press", function() {
+                isPressingDown = true;
+            });
+
+            hammer.on("pressup", function() {
+                isPressingDown = false;
+                resetGameInterval();
+            });
+
+            // Move down while pressing
+            setInterval(function() {
+                if (isPressingDown) {
+                    clearInterval(gameInterval);
+                    moveDown();
+                }
+            }, 75);
+
+            // Start the game
+            Tetrez.view.init();
             resetGameInterval();
             moveDown();
         }

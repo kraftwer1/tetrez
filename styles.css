@@ -19,6 +19,9 @@ body {
 
 canvas {
     vertical-align: middle;
+
+    // Needed for OSX Safari
+    min-height: 100%;
 }
 
 #screen {

@@ -1,22 +1,11 @@
 (function() {
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-    var aspectRatio = width / height;
     var viewSize = Tetrez.config.dimension.y;
     var nextRotationStopX = 0;
     var nextRotationStopY = 0;
     var rotationStep = Math.PI * 2 / 2500;
 
+    var camera = new THREE.OrthographicCamera();
     var scene = new THREE.Scene();
-
-    var camera = new THREE.OrthographicCamera(
-        -(aspectRatio * viewSize / 2),
-        (aspectRatio * viewSize / 2),
-        (viewSize / 2),
-        -(viewSize / 2)
-    );
-
-    camera.position.z = viewSize;
 
     var ambientLight = new THREE.AmbientLight(0xffffff);
     scene.add(ambientLight);
@@ -42,7 +31,6 @@
         antialias: true
     });
 
-    renderer.setSize(width, height);
     renderer.setClearColor(0x000000);
     renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
 
@@ -59,14 +47,29 @@
         requestAnimationFrame(render);
     };
 
-    // Initial render
-    render();
-
     // Keep references to the lastly rendered meshs blocks
     // so they can be garbage collected later
     var lastMeshes = [];
 
     Tetrez.view = {
+        init: function() {
+            var width = window.innerWidth;
+            var height = window.innerHeight;
+            var aspectRatio = width / height;
+
+            camera.left = -(aspectRatio * viewSize / 2);
+            camera.right = (aspectRatio * viewSize / 2);
+            camera.top = (viewSize / 2);
+            camera.bottom = -(viewSize / 2);
+            camera.position.z = viewSize;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(width, height);
+
+            // Initial render
+            render();
+        },
+
         draw: function() {
             // Garbage collection (remove all existing meshes from scene)
             for (var i = lastMeshes.length - 1; i >= 0; --i) {
