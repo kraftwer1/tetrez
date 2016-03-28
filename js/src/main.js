@@ -2,7 +2,7 @@
     var tetromino = null;
 
     // Prevent elastic scrolling (e.g. iOS Safari)
-    document.body.addEventListener("touchmove", function(e) {
+    window.addEventListener("touchmove", function(e) {
         event.preventDefault();
     });
 
