@@ -11,26 +11,35 @@
     };
 
     Tetrez.field.onRowComplete = function(completedRows) {
+        if (Tetrez.config.isDebugMode) completedRows *= 4;
+
         switch (completedRows) {
-            case 1:
+            case 4:
                 Tetrez.view.rotate({
-                    x: Math.PI / 8,
+                    x: Math.PI / 8
+                });
+            break;
+
+            case 8:
+                Tetrez.view.rotate({
                     y: Math.PI / 8
                 });
             break;
 
-            case 2:
+            case 12:
                 Tetrez.view.rotate({
-                    x: Math.PI / 8,
+                    x: Math.PI / 8
+                });
+            break;
+
+            case 16:
+                Tetrez.view.rotate({
                     y: Math.PI / 8
                 });
             break;
 
-            case 3:
-                Tetrez.view.rotate({
-                    x: Math.PI / 8,
-                    y: Math.PI / 8
-                });
+            default:
+                console.log("Rows completed", completedRows);
             break;
         }
     };

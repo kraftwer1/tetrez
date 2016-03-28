@@ -6,6 +6,7 @@
                 y: 18
             },
             isDebugMode: false,
+            onlyTTetrominos: false,
             initSpeed: 500
         }
     };

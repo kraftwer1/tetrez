@@ -92,8 +92,13 @@
     Tetrez.Tetromino = function() {
         // Construct random tetromino
         var blocksKeys = Object.keys(blocks);
-        var randomBlockKey = Math.floor(Math.random() * blocksKeys.length);
-        var randomBlock = _.cloneDeep(blocks[blocksKeys[randomBlockKey]]);
+
+        var randomBlockKeyPosition = Math.floor(Math.random() * blocksKeys.length);
+        var randomBlockKey = blocksKeys[randomBlockKeyPosition];
+
+        if (Tetrez.config.onlyTTetrominos) randomBlockKey = "t";
+
+        var randomBlock = _.cloneDeep(blocks[randomBlockKey]);
 
         for (var key in randomBlock) {
             this[key] = randomBlock[key];
