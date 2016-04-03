@@ -36,11 +36,11 @@
 
     var render = function() {
         if (group.rotation.x < nextRotationStopX) {
-            group.rotation.x += rotationStep;       
+            group.rotation.x += rotationStep;
         }
 
         if (group.rotation.y < nextRotationStopY) {
-            group.rotation.y += rotationStep;       
+            group.rotation.y += rotationStep;
         }
 
         renderer.render(scene, camera);
@@ -96,6 +96,12 @@
         rotate: function(rotation) {
             if (rotation.x) nextRotationStopX += rotation.x;
             if (rotation.y) nextRotationStopY += rotation.y;
+        },
+
+        isFrontSideBack: function() {
+            var currentRelativeRotation = group.rotation.y % (Math.PI * 2);
+
+            return (currentRelativeRotation >= Math.PI / 2 && currentRelativeRotation < Math.PI * 1.5);
         }
     };
 }());

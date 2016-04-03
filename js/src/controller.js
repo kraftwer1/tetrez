@@ -38,13 +38,53 @@
                 });
             break;
 
-            default:
-                console.log("Rows completed", completedRows);
+            case 20:
+                Tetrez.view.rotate({
+                    y: Math.PI / 2
+                });
+            break;
+
+            case 24:
+                Tetrez.view.rotate({
+                    x: Math.PI / 8
+                });
+            break;
+
+            case 28:
+                Tetrez.view.rotate({
+                    y: Math.PI / 8
+                });
+            break;
+
+            case 32:
+                Tetrez.view.rotate({
+                    x: Math.PI / 8
+                });
+            break;
+
+            case 36:
+                Tetrez.view.rotate({
+                    y: Math.PI / 8
+                });
             break;
         }
+
+        if (Tetrez.config.isDebugMode) console.log("Rows completed", completedRows);
     };
 
-    moveRight = function() {
+    var right = function() {
+        // Flip left and right between 90° - and 270° to confuse the user less
+        if (Tetrez.view.isFrontSideBack()) return moveLeft();
+        moveRight();
+    };
+
+    var left = function() {
+        // Flip left and right between 90° - and 270° to confuse the user less
+        if (Tetrez.view.isFrontSideBack()) return moveRight();
+        moveLeft();
+    };
+
+    var moveRight = function() {
         if (Tetrez.field.canTetrominoMoveRight(tetromino)) {
             tetromino.moveRight();
             Tetrez.field.applyTetromino(tetromino, 1);
@@ -52,7 +92,7 @@
         }
     };
 
-    moveLeft = function() {
+    var moveLeft = function() {
         if (Tetrez.field.canTetrominoMoveLeft(tetromino)) {
             tetromino.moveLeft();
             Tetrez.field.applyTetromino(tetromino, 1);
@@ -60,7 +100,7 @@
         }
     };
 
-    moveDown = function() {
+    var moveDown = function() {
         // Add a new block if no one is currently falling and return
         if (!hasFallingTetromino) {
             tetromino = new Tetrez.Tetromino;
@@ -95,14 +135,14 @@
 
         // Quit on game over
         if (Tetrez.isGameOver) {
-            console.log("Game Over :-(");
+            if (Tetrez.config.isDebugMode) console.log("Game Over :-(");
             clearInterval(gameInterval);
         }
 
         Tetrez.view.draw();
     };
 
-    rotate = function() {
+    var rotate = function() {
         var rotatedMatrix = Tetrez.field.canTetrominoRotate(tetromino);
 
         if (rotatedMatrix) {
@@ -120,24 +160,13 @@
             window.addEventListener("keydown", function(e) {
                 if (Tetrez.isGameOver) return;
 
-                // Between 90° - and 270° to confuse the user less
-                // var isControlsInverted = (group.rotation.y >= Math.PI / 2 && group.rotation.y < Math.PI * 1.5);
-
                 switch (e.keyCode) {
                     case 37: // Left
-                        // if (isControlsInverted) {
-                            // moveRight();
-                        // } else {
-                            moveLeft();
-                        // }
+                        left();
                     break;
 
                     case 39: // Right
-                        // if (isControlsInverted) {
-                            // moveLeft();
-                        // } else {
-                            moveRight();
-                        // }
+                        right();
                     break;
 
                     case 38: // Top
@@ -173,11 +202,11 @@
             hammer.on("swipe", function(e) {
                 switch (e.direction) {
                     case 2: // Left
-                        moveLeft();
+                        left();
                     break;
 
                     case 4: // Right
-                        moveRight();
+                        right();
                     break;
                 }
             });
