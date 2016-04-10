@@ -1,8 +1,8 @@
 (function() {
     var viewSize = Tetrez.config.dimension.y;
-    var nextRotationStopX = 0;
-    var nextRotationStopY = 0;
     var rotationStep = Math.PI * 2 / 2500;
+    var xRotationQueue = new Tetrez.Queue;
+    var yRotationQueue = new Tetrez.Queue;
 
     var camera = new THREE.OrthographicCamera();
     var scene = new THREE.Scene();
@@ -35,12 +35,27 @@
     renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
 
     var render = function() {
-        if (group.rotation.x < nextRotationStopX) {
-            group.rotation.x += rotationStep;
+        var xNextRotationTarget = xRotationQueue.getCurrent();
+        var yNextRotationTarget = yRotationQueue.getCurrent();
+
+        if (typeof xNextRotationTarget !== "undefined") {
+            if (Math.abs(group.rotation.x - xNextRotationTarget) < 0.01) {
+                xRotationQueue.pop();
+            } else if (group.rotation.x > xNextRotationTarget) {
+                group.rotation.x -= rotationStep;
+            } else {
+                group.rotation.x += rotationStep;
+            }
         }
 
-        if (group.rotation.y < nextRotationStopY) {
-            group.rotation.y += rotationStep;
+        if (typeof yNextRotationTarget !== "undefined") {
+            if (Math.abs(group.rotation.y - yNextRotationTarget) < 0.01) {
+                yRotationQueue.pop();
+            } else if (group.rotation.y > yNextRotationTarget) {
+                group.rotation.y -= rotationStep;
+            } else {
+                group.rotation.y += rotationStep;
+            }
         }
 
         renderer.render(scene, camera);
@@ -94,8 +109,8 @@
         },
 
         rotate: function(rotation) {
-            if (rotation.x) nextRotationStopX += rotation.x;
-            if (rotation.y) nextRotationStopY += rotation.y;
+            if (rotation.x) xRotationQueue.push(xRotationQueue.getLastPopped() + rotation.x);
+            if (rotation.y) yRotationQueue.push(yRotationQueue.getLastPopped() + rotation.y);
         },
 
         isFrontSideBack: function() {

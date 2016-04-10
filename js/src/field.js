@@ -4,6 +4,10 @@
     Tetrez.field = {
         onRowComplete: function() {},
 
+        resetCompletedRows: function() {
+            completedRows = 0;
+        },
+
         // Init field, multidimensional array containing tiles:
         field: (function() {
             var field = [];

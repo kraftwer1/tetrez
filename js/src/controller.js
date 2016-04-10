@@ -1,7 +1,6 @@
 (function() {
     var isGameOver = false;
     var gameInterval;
-    var completedRows = 0;
     var hasFallingTetromino = false;
     var isPressingDown = false;
 
@@ -46,26 +45,28 @@
 
             case 24:
                 Tetrez.view.rotate({
-                    x: Math.PI / 8
+                    y: Math.PI / 8
                 });
             break;
 
             case 28:
                 Tetrez.view.rotate({
-                    y: Math.PI / 8
+                    x: -Math.PI / 8
                 });
             break;
 
             case 32:
                 Tetrez.view.rotate({
-                    x: Math.PI / 8
+                    y: Math.PI / 8
                 });
             break;
 
             case 36:
                 Tetrez.view.rotate({
-                    y: Math.PI / 8
+                    x: -Math.PI / 8
                 });
+
+                Tetrez.field.resetCompletedRows();
             break;
         }
 
