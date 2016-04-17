@@ -3,10 +3,25 @@
     var gameInterval;
     var hasFallingTetromino = false;
     var isPressingDown = false;
+    var nextFullTick;
+    var nextQuarterTick;
+    var debounceInterval;
+    var sequencerStep = 0;
+
+    createjs.Sound.registerSound({ src: "sounds/hh.mp3", id: "hh" });
+    createjs.Sound.registerSound({ src: "sounds/bd.mp3", id: "bd" });
+    createjs.Sound.registerSound({ src: "sounds/chord.mp3", id: "chord" });
 
     var resetGameInterval = function() {
         clearInterval(gameInterval);
-        gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
+
+        clearInterval(debounceInterval);
+        debounceInterval = undefined;
+
+        nextFullTick = function() {
+            moveDown();
+            gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
+        };
     };
 
     Tetrez.field.onRowComplete = function(completedRows) {
@@ -102,6 +117,22 @@
     };
 
     var moveDown = function() {
+        // Debounce
+        if (isPressingDown) {
+            if (!debounceInterval) {
+                nextQuarterTick = function() {
+                    createjs.Sound.play("bd");
+
+                    debounceInterval = setInterval(function() {
+                        createjs.Sound.play("bd");
+                    }, Tetrez.config.initSpeed / 4);
+                };
+            }
+        } else {
+            clearInterval(debounceInterval);
+            debounceInterval = undefined;
+        }
+
         // Add a new block if no one is currently falling and return
         if (!hasFallingTetromino) {
             tetromino = new Tetrez.Tetromino;
@@ -119,6 +150,10 @@
             } else {
                 // Cannot move any further, copy tetrominos visible blocks into field
                 Tetrez.field.applyTetromino(tetromino, 2);
+
+                nextQuarterTick = function() {
+                    createjs.Sound.play("chord");
+                };
 
                 // Ignore further keypressing after tetromino has landed
                 if (isPressingDown) {
@@ -233,10 +268,43 @@
                 }
             }, 75);
 
-            // Start the game
+            // Sequencer
+            setInterval(function() {
+                switch (sequencerStep) {
+                    case 0:
+                        if (typeof nextFullTick === "function") {
+                            nextFullTick();
+                            nextFullTick = undefined;
+                        }
+
+                        if (!isPressingDown) createjs.Sound.play("bd");
+                    break;
+
+                    case 1:
+                    break;
+
+                    case 2:
+                        createjs.Sound.play("hh");
+                    break;
+
+                    case 3:
+                    break;
+                }
+
+                if (typeof nextQuarterTick === "function") {
+                    nextQuarterTick();
+                    nextQuarterTick = undefined;
+                }
+
+                if (sequencerStep === 3) {
+                    sequencerStep = 0;
+                } else {
+                    ++sequencerStep;
+                }
+            }, Tetrez.config.initSpeed / 4);
+
             Tetrez.view.init();
             resetGameInterval();
-            moveDown();
         }
     };
 }());
