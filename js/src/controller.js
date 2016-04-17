@@ -190,7 +190,7 @@
 
     Tetrez.controller = {
         init: function() {
-            var isKeyRepeating = false;
+            var isDownKeyRepeating = false;
             var hammer = new Hammer(document.getElementById("canvas"));
 
             window.addEventListener("keydown", function(e) {
@@ -205,16 +205,16 @@
                         right();
                     break;
 
-                    case 38: // Top
+                    case 38: // Up
                         rotate();
                     break;
 
-                    case 40: // Bottom
-                        if (!isKeyRepeating) {
+                    case 40: // Down
+                        if (!isDownKeyRepeating) {
                             isPressingDown = true;
                         }
 
-                        isKeyRepeating = true;
+                        isDownKeyRepeating = true;
                     break;
 
                     case 32: // Space
@@ -226,9 +226,9 @@
                 if (Tetrez.isGameOver) return;
 
                 switch (e.keyCode) {
-                    case 40: // Bottom
+                    case 40: // Down
                         isPressingDown = false;
-                        isKeyRepeating = false;
+                        isDownKeyRepeating = false;
 
                         resetGameInterval();
                     break;
