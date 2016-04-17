@@ -120,7 +120,7 @@
                 // Cannot move any further, copy tetrominos visible blocks into field
                 Tetrez.field.applyTetromino(tetromino, 2);
 
-                // Ignore further keypressing after row has completed
+                // Ignore further keypressing after tetromino has landed
                 if (isPressingDown) {
                     resetGameInterval();
                 }
