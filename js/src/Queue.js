@@ -20,5 +20,9 @@
         this.getLastPopped = function() {
             return lastPopped;
         };
+
+        this.getLength = function() {
+            return queue.length;
+        };
     };
 }());

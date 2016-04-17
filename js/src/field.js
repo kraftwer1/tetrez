@@ -1,8 +1,6 @@
 (function() {
-    var completedRows = 0;
-
     Tetrez.field = {
-        onRowComplete: function() {},
+        onRowsComplete: function() {},
 
         resetCompletedRows: function() {
             completedRows = 0;
@@ -24,6 +22,8 @@
         }()),
 
         applyTetromino: function(tetromino, type) {
+            var completedRows = 0;
+            
             // Clear all temporary positions
             for (var i = 0; i < this.field.length; ++i) {
                 for (var j = 0; j < this.field[i].length; ++j) {
@@ -53,10 +53,12 @@
                         this.field.splice(i, 1);
                         this.field.unshift(newRow);
 
-                        this.onRowComplete(++completedRows);
+                        ++completedRows;
                     }
                 }
             }
+
+            if (completedRows) this.onRowsComplete(completedRows);
         },
 
         canPlaceTetromino: function(tetromino) {

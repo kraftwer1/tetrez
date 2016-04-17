@@ -4,15 +4,19 @@
     var hasFallingTetromino = false;
     var isPressingDown = false;
     var nextFullTick;
-    var nextQuarterTick;
     var debounceInterval;
     var sequencerStep = 0;
+    var fullTickQueue = new Tetrez.Queue;
+    var quarterTickQueue = new Tetrez.Queue;
+    var completedRows = 0;
 
     createjs.Sound.registerSound({ src: "sounds/hh.mp3", id: "hh" });
     createjs.Sound.registerSound({ src: "sounds/bd.mp3", id: "bd" });
     createjs.Sound.registerSound({ src: "sounds/chord.mp3", id: "chord" });
     createjs.Sound.registerSound({ src: "sounds/halfbd.mp3", id: "halfbd" });
     createjs.Sound.registerSound({ src: "sounds/sweep.mp3", id: "sweep" });
+    createjs.Sound.registerSound({ src: "sounds/trance.mp3", id: "trance" });
+    createjs.Sound.registerSound({ src: "sounds/sunrise.mp3", id: "sunrise" });
 
     var resetGameInterval = function() {
         clearInterval(gameInterval);
@@ -26,66 +30,92 @@
         };
     };
 
-    Tetrez.field.onRowComplete = function(completedRows) {
-        if (Tetrez.config.isDebugMode) completedRows *= 4;
+    Tetrez.field.onRowsComplete = function(_completedRows) {
+        if (Tetrez.config.isDebugMode) _completedRows *= 4;
 
         switch (completedRows) {
             case 4:
+                createjs.Sound.play("sunrise");
+
                 Tetrez.view.rotate({
                     x: Math.PI / 8
                 });
             break;
 
             case 8:
+                createjs.Sound.play("sunrise");
+
                 Tetrez.view.rotate({
                     y: Math.PI / 8
                 });
             break;
 
             case 12:
+                createjs.Sound.play("sunrise");
+
                 Tetrez.view.rotate({
                     x: Math.PI / 8
                 });
             break;
 
             case 16:
+                createjs.Sound.play("sunrise");
+
                 Tetrez.view.rotate({
                     y: Math.PI / 8
                 });
             break;
 
             case 20:
+                createjs.Sound.play("sunrise");
+
                 Tetrez.view.rotate({
                     y: Math.PI / 2
                 });
             break;
 
             case 24:
+                createjs.Sound.play("sunrise");
+
                 Tetrez.view.rotate({
                     y: Math.PI / 8
                 });
             break;
 
             case 28:
+                createjs.Sound.play("sunrise");
+
                 Tetrez.view.rotate({
                     x: -Math.PI / 8
                 });
             break;
 
             case 32:
+                createjs.Sound.play("sunrise");
+
                 Tetrez.view.rotate({
                     y: Math.PI / 8
                 });
             break;
 
             case 36:
+                createjs.Sound.play("sunrise");
+
                 Tetrez.view.rotate({
                     x: -Math.PI / 8
                 });
 
                 Tetrez.field.resetCompletedRows();
             break;
+
+            default:
+                quarterTickQueue.push(function() {
+                    createjs.Sound.play("trance");
+                });
+            break;
         }
+
+        completedRows += _completedRows;
 
         if (Tetrez.config.isDebugMode) console.log("Rows completed", completedRows);
     };
@@ -104,9 +134,9 @@
 
     var moveRight = function() {
         if (Tetrez.field.canTetrominoMoveRight(tetromino)) {
-            nextQuarterTick = function() {
+            quarterTickQueue.push(function() {
                 createjs.Sound.play("halfbd");
-            };
+            });
 
             tetromino.moveRight();
             Tetrez.field.applyTetromino(tetromino, 1);
@@ -116,9 +146,9 @@
 
     var moveLeft = function() {
         if (Tetrez.field.canTetrominoMoveLeft(tetromino)) {
-            nextQuarterTick = function() {
+            quarterTickQueue.push(function() {
                 createjs.Sound.play("halfbd");
-            };
+            });
 
             tetromino.moveLeft();
             Tetrez.field.applyTetromino(tetromino, 1);
@@ -130,13 +160,15 @@
         // Debounce
         if (isPressingDown) {
             if (!debounceInterval) {
-                nextQuarterTick = function() {
-                    createjs.Sound.play("bd");
+                quarterTickQueue.push(function() {
+                    createjs.Sound.play("halfbd");
+
+                    clearInterval(debounceInterval);
 
                     debounceInterval = setInterval(function() {
-                        createjs.Sound.play("bd");
+                        createjs.Sound.play("halfbd");
                     }, Tetrez.config.initSpeed / 4);
-                };
+                });
             }
         } else {
             clearInterval(debounceInterval);
@@ -161,9 +193,9 @@
                 // Cannot move any further, copy tetrominos visible blocks into field
                 Tetrez.field.applyTetromino(tetromino, 2);
 
-                nextQuarterTick = function() {
+                quarterTickQueue.push(function() {
                     createjs.Sound.play("chord");
-                };
+                });
 
                 // Ignore further keypressing after tetromino has landed
                 if (isPressingDown) {
@@ -192,9 +224,9 @@
         var rotatedMatrix = Tetrez.field.canTetrominoRotate(tetromino);
 
         if (rotatedMatrix) {
-            nextQuarterTick = function() {
+            quarterTickQueue.push(function() {
                 createjs.Sound.play("sweep");
-            };
+            });
 
             tetromino.rotate(rotatedMatrix);
             Tetrez.field.applyTetromino(tetromino, 1);
@@ -291,7 +323,12 @@
                             nextFullTick = undefined;
                         }
 
-                        if (!isPressingDown) createjs.Sound.play("bd");
+                        while (fullTickQueue.getLength()) {
+                            fullTickQueue.getCurrent()();
+                            fullTickQueue.pop();
+                        }
+
+                        createjs.Sound.play("bd");
                     break;
 
                     case 1:
@@ -305,9 +342,9 @@
                     break;
                 }
 
-                if (typeof nextQuarterTick === "function") {
-                    nextQuarterTick();
-                    nextQuarterTick = undefined;
+                while (quarterTickQueue.getLength()) {
+                    quarterTickQueue.getCurrent()();
+                    quarterTickQueue.pop();
                 }
 
                 if (sequencerStep === 3) {
