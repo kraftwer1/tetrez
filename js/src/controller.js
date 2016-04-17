@@ -11,6 +11,8 @@
     createjs.Sound.registerSound({ src: "sounds/hh.mp3", id: "hh" });
     createjs.Sound.registerSound({ src: "sounds/bd.mp3", id: "bd" });
     createjs.Sound.registerSound({ src: "sounds/chord.mp3", id: "chord" });
+    createjs.Sound.registerSound({ src: "sounds/halfbd.mp3", id: "halfbd" });
+    createjs.Sound.registerSound({ src: "sounds/sweep.mp3", id: "sweep" });
 
     var resetGameInterval = function() {
         clearInterval(gameInterval);
@@ -102,6 +104,10 @@
 
     var moveRight = function() {
         if (Tetrez.field.canTetrominoMoveRight(tetromino)) {
+            nextQuarterTick = function() {
+                createjs.Sound.play("halfbd");
+            };
+
             tetromino.moveRight();
             Tetrez.field.applyTetromino(tetromino, 1);
             Tetrez.view.draw();
@@ -110,6 +116,10 @@
 
     var moveLeft = function() {
         if (Tetrez.field.canTetrominoMoveLeft(tetromino)) {
+            nextQuarterTick = function() {
+                createjs.Sound.play("halfbd");
+            };
+
             tetromino.moveLeft();
             Tetrez.field.applyTetromino(tetromino, 1);
             Tetrez.view.draw();
@@ -182,6 +192,10 @@
         var rotatedMatrix = Tetrez.field.canTetrominoRotate(tetromino);
 
         if (rotatedMatrix) {
+            nextQuarterTick = function() {
+                createjs.Sound.play("sweep");
+            };
+
             tetromino.rotate(rotatedMatrix);
             Tetrez.field.applyTetromino(tetromino, 1);
             Tetrez.view.draw();
