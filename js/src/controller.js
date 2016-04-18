@@ -17,6 +17,7 @@
     createjs.Sound.registerSound({ src: "sounds/sweep.mp3", id: "sweep" });
     createjs.Sound.registerSound({ src: "sounds/trance.mp3", id: "trance" });
     createjs.Sound.registerSound({ src: "sounds/sunrise.mp3", id: "sunrise" });
+    createjs.Sound.registerSound({ src: "sounds/wood.mp3", id: "wood" });
 
     var resetGameInterval = function() {
         clearInterval(gameInterval);
@@ -32,6 +33,8 @@
 
     Tetrez.field.onRowsComplete = function(_completedRows) {
         if (Tetrez.config.isDebugMode) _completedRows *= 4;
+
+        completedRows += _completedRows;
 
         switch (completedRows) {
             case 4:
@@ -115,8 +118,6 @@
             break;
         }
 
-        completedRows += _completedRows;
-
         if (Tetrez.config.isDebugMode) console.log("Rows completed", completedRows);
     };
 
@@ -135,7 +136,7 @@
     var moveRight = function() {
         if (Tetrez.field.canTetrominoMoveRight(tetromino)) {
             quarterTickQueue.push(function() {
-                createjs.Sound.play("halfbd");
+                createjs.Sound.play("wood");
             });
 
             tetromino.moveRight();
@@ -147,7 +148,7 @@
     var moveLeft = function() {
         if (Tetrez.field.canTetrominoMoveLeft(tetromino)) {
             quarterTickQueue.push(function() {
-                createjs.Sound.play("halfbd");
+                createjs.Sound.play("wood");
             });
 
             tetromino.moveLeft();
