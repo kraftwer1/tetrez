@@ -71,8 +71,13 @@ canvas {
     opacity: 0;
 }
 
-.speaker {
+.icon {
     width: 22px;
     position: relative;
     left: 5px;
+}
+
+.icon.reload {
+    width: 18px;
+    bottom: 2px;
 }
