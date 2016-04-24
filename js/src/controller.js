@@ -106,8 +106,6 @@
                 createjs.Sound.play("trance");
             });
         };
-
-        if (Tetrez.config.isDebugMode) console.log("Rows completed", completedRows);
     };
 
     var right = function() {
