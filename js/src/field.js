@@ -1,5 +1,6 @@
 (function() {
     Tetrez.field = {
+        onRowComplete: function() {},
         onRowsComplete: function() {},
 
         resetCompletedRows: function() {
@@ -53,7 +54,7 @@
                         this.field.splice(i, 1);
                         this.field.unshift(newRow);
 
-                        ++completedRows;
+                        this.onRowComplete(++completedRows);
                     }
                 }
             }

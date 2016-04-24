@@ -9,7 +9,6 @@
     var sequencerStep = 0;
     var fullTickQueue = new Tetrez.Queue;
     var quarterTickQueue = new Tetrez.Queue;
-    var completedRows = 0;
 
     var resetGameInterval = function() {
         clearInterval(gameInterval);
@@ -23,10 +22,8 @@
         };
     };
 
-    Tetrez.field.onRowsComplete = function(_completedRows) {
-        if (Tetrez.config.isDebugMode) _completedRows *= 4;
-
-        completedRows += _completedRows;
+    Tetrez.field.onRowComplete = function(completedRows) {
+        if (Tetrez.config.isDebugMode) completedRows *= 4;
 
         switch (completedRows) {
             case 4:
@@ -102,13 +99,13 @@
 
                 Tetrez.field.resetCompletedRows();
             break;
-
-            default:
-                quarterTickQueue.push(function() {
-                    createjs.Sound.play("trance");
-                });
-            break;
         }
+
+        Tetrez.field.onRowsComplete = function() {
+            quarterTickQueue.push(function() {
+                createjs.Sound.play("trance");
+            });
+        };
 
         if (Tetrez.config.isDebugMode) console.log("Rows completed", completedRows);
     };
