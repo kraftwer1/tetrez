@@ -9,6 +9,7 @@
     var sequencerStep = 0;
     var fullTickQueue = new Tetrez.Queue;
     var quarterTickQueue = new Tetrez.Queue;
+    var playHiHat = false;
 
     var resetGameInterval = function() {
         clearInterval(gameInterval);
@@ -28,6 +29,7 @@
         switch (completedRows) {
             case 4:
                 createjs.Sound.play("sunrise");
+                playHiHat = true;
 
                 Tetrez.view.rotate({
                     x: Math.PI / 8
@@ -330,7 +332,7 @@
                     break;
 
                     case 2:
-                        createjs.Sound.play("hh");
+                        if (playHiHat) createjs.Sound.play("hh");
                     break;
 
                     case 3:
