@@ -1,31 +1,36 @@
 (function() {
-    var screenElement = document.getElementById("screen");
+    var titleScreen = document.getElementById("titleScreen");
+    var gameOverScreen = document.getElementById("gameOverScreen");
+
+    var startGame = function() {
+        titleScreen.addEventListener("transitionend", function(e) {
+            e.target.style.display = "none";
+        });
+
+        titleScreen.classList.add("transparent");
+        
+        // This starts the game
+        Tetrez.controller.init();
+
+        // Make sure the game can be started only once
+        titleScreen.removeEventListener("click", startGame);
+    };
 
     // Prevent elastic scrolling (e.g. iOS Safari)
     window.addEventListener("touchmove", function(e) {
         e.preventDefault();
     });
 
-    var startGame = function() {
-        screenElement.addEventListener("transitionend", function(e) {
-            e.target.style.display = "none";
-        });
-
-        screenElement.classList.add("transparent");
-        
-        // This starts the game
-        Tetrez.controller.init();
-
-        // Make sure the game can be started only once
-        screenElement.removeEventListener("click", startGame);
-    };
+    gameOverScreen.addEventListener("click", function() {
+        location.reload();
+    });
 
     var audioLoadQueue = new createjs.LoadQueue;
     audioLoadQueue.installPlugin(createjs.Sound);
 
     // Game can be played when everything is loaded
     audioLoadQueue.on("complete", function() {
-        screenElement.addEventListener("click", startGame);
+        titleScreen.addEventListener("click", startGame);
 
         document.getElementById("loading").style.display = "none";
         document.getElementById("play").style.display = "block";
@@ -35,7 +40,7 @@
             // where sometimes the canvas does not have a height of 100%
             // because the window.innerHeight variable isn't ready
             setTimeout(function() {
-                screenElement.click();
+                titleScreen.click();
             }, 1000);
         }
     });

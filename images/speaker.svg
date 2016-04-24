@@ -1,30 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-xmlns:dc="http://purl.org/dc/elements/1.1/"
-xmlns:cc="http://web.resource.org/cc/"
-xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-xmlns:svg="http://www.w3.org/2000/svg"
-xmlns="http://www.w3.org/2000/svg"
-xml:space="preserve"
-version="1.0"
-id="layer1"
-width="400pt" height="400pt"
-viewBox="0 0 75 75"><metadata
-id="metadata1"><rdf:RDF><cc:Work
-rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><g
-id="g1"><polygon
-id="polygon1"
-points="39.389,13.769 22.235,28.606 6,28.606 6,47.699 21.989,47.699 39.389,62.75 39.389,13.769"
-style="stroke:#fff;stroke-width:5;stroke-linejoin:round;fill:#fff;"
-/><path id="path1"
-d="M 48.128,49.03 C 50.057,45.934 51.19,42.291 51.19,38.377 C 51.19,34.399 50.026,30.703 48.043,27.577"
-style="fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round"/>
-<path id="path2"
-d="M 55.082,20.537 C 58.777,25.523 60.966,31.694 60.966,38.377 C 60.966,44.998 58.815,51.115 55.178,56.076"
-style="fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round"/>
-<path id="path1"
-d="M 61.71,62.611 C 66.977,55.945 70.128,47.531 70.128,38.378 C 70.128,29.161 66.936,20.696 61.609,14.01"
-style="fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+<path fill="#fff" d="M60.545,32.944l-5.687,5.687c2.929,2.9,4.743,6.922,4.743,11.369c0,4.446-1.814,8.469-4.743,11.368l5.687,5.687  c4.361-4.367,7.059-10.396,7.059-17.055C67.604,43.34,64.906,37.312,60.545,32.944z"/>
+<path fill="#fff" d="M83.605,50c0-11.075-4.501-21.099-11.772-28.343l-5.63,5.63c5.809,5.815,9.401,13.844,9.401,22.713  c0,8.868-3.593,16.897-9.401,22.713l5.63,5.63C79.104,71.099,83.605,61.075,83.605,50z"/>
+<path fill="#fff" d="M99.608,50c0-15.495-6.293-29.519-16.46-39.659l-5.658,5.658C86.21,24.691,91.606,36.715,91.606,50  c0,13.284-5.396,25.309-14.116,34l5.658,5.658C93.315,79.519,99.608,65.494,99.608,50z"/>
+<polygon fill="#fff" points="0,66 21.085,66 44,87.208 44,12.791 21.517,34 0,34 "/>
 </svg>

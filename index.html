@@ -9,13 +9,21 @@
     </head>
 
     <body>
-        <div id="screen">
-            <div id="title">
+        <div id="titleScreen" class="screen">
+            <div class="title">
                 <span>T</span><span>E</span><span>T</span><span>R</span><span>E</span><span>Z</span>
             </div>
 
             <div id="loading">Loading</div>
             <div id="play">Start<img class="speaker" src="images/speaker.svg"></div>
+        </div>
+
+        <div id="gameOverScreen" class="screen transparent">
+            <div class="title">
+                <span>T</span><span>E</span><span>T</span><span>R</span><span>E</span><span>Z</span>
+            </div>
+
+            <div>Gameover<img class="speaker" src="images/reload.svg"></div>
         </div>
 
         <canvas id="canvas"></canvas>

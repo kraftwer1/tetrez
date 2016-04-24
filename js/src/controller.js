@@ -1,6 +1,7 @@
 (function() {
     var isGameOver = false;
     var gameInterval;
+    var sequencerInterval;
     var hasFallingTetromino = false;
     var isPressingDown = false;
     var nextFullTick;
@@ -205,8 +206,15 @@
 
         // Quit on game over
         if (Tetrez.isGameOver) {
-            if (Tetrez.config.isDebugMode) console.log("Game Over :-(");
             clearInterval(gameInterval);
+            clearInterval(sequencerInterval);
+
+            document.getElementById("gameOverScreen").style.display = "flex";
+
+            // This setTimeout() is required to play the animation
+            setTimeout(function() {
+                document.getElementById("gameOverScreen").classList.remove("transparent");
+            }, 200);
         }
 
         Tetrez.view.draw();
@@ -307,7 +315,7 @@
             }, 75);
 
             // Sequencer
-            setInterval(function() {
+            sequencerInterval = setInterval(function() {
                 switch (sequencerStep) {
                     case 0:
                         if (typeof nextFullTick === "function") {
