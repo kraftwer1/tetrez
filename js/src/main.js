@@ -3,7 +3,7 @@
 
     // Prevent elastic scrolling (e.g. iOS Safari)
     window.addEventListener("touchmove", function(e) {
-        event.preventDefault();
+        e.preventDefault();
     });
 
     var startGame = function() {
