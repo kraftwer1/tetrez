@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <title>Tetrez</title>
         <link rel="stylesheet" href="styles.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
 
     <body>
@@ -12,6 +13,9 @@
             <div id="title">
                 <span>T</span><span>E</span><span>T</span><span>R</span><span>E</span><span>Z</span>
             </div>
+
+            <div id="loading">Loading</div>
+            <div id="play">Start<img class="speaker" src="images/speaker.svg"></div>
         </div>
 
         <canvas id="canvas"></canvas>
@@ -21,6 +25,7 @@
         <script src="js/lib/sylvester.js"></script>
         <script src="js/lib/hammer.js"></script>
         <script src="js/lib/hammer-time.js"></script>
+        <script src="js/lib/preloadjs-0.6.2.combined.js"></script>
         <script src="js/lib/soundjs-0.6.2.combined.js"></script>
         
         <script src="js/src/config.js"></script>

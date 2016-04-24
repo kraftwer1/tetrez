@@ -10,15 +10,6 @@
     var quarterTickQueue = new Tetrez.Queue;
     var completedRows = 0;
 
-    createjs.Sound.registerSound({ src: "sounds/hh.mp3", id: "hh" });
-    createjs.Sound.registerSound({ src: "sounds/bd.mp3", id: "bd" });
-    createjs.Sound.registerSound({ src: "sounds/chord.mp3", id: "chord" });
-    createjs.Sound.registerSound({ src: "sounds/halfbd.mp3", id: "halfbd" });
-    createjs.Sound.registerSound({ src: "sounds/sweep.mp3", id: "sweep" });
-    createjs.Sound.registerSound({ src: "sounds/trance.mp3", id: "trance" });
-    createjs.Sound.registerSound({ src: "sounds/sunrise.mp3", id: "sunrise" });
-    createjs.Sound.registerSound({ src: "sounds/wood.mp3", id: "wood" });
-
     var resetGameInterval = function() {
         clearInterval(gameInterval);
 

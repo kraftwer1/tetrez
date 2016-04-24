@@ -6,7 +6,10 @@
 body {
     margin: 0;
     font-family: NovaMono;
+    text-transform: uppercase;
     background-color: #000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 
     // Disable text selection
     -webkit-touch-callout: none;
@@ -24,6 +27,7 @@ canvas {
     min-height: 100%;
 }
 
+
 #screen {
     display: flex;
     flex-direction: column;
@@ -40,7 +44,8 @@ canvas {
 }
 
 #title {
-    font-size: 20vw;
+    font-size: 100px;
+    line-height: 110px;
 }
 
 #title > span:nth-of-type(1) { color: #fde6d0; }
@@ -50,6 +55,20 @@ canvas {
 #title > span:nth-of-type(5) { color: #8f3b50; }
 #title > span:nth-of-type(6) { color: #441833; }
 
+#loading, #play {
+    font-size: 30px;
+}
+
+#play {
+    display: none;
+}
+
 .transparent {
     opacity: 0;
+}
+
+.speaker {
+    width: 22px;
+    position: relative;
+    left: 5px;
 }
