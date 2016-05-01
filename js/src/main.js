@@ -53,4 +53,8 @@
     audioLoadQueue.loadFile({ src: "sounds/trance.mp3", id: "trance" });
     audioLoadQueue.loadFile({ src: "sounds/sunrise.mp3", id: "sunrise" });
     audioLoadQueue.loadFile({ src: "sounds/wood.mp3", id: "wood" });
+    audioLoadQueue.loadFile({ src: "sounds/bass1.mp3", id: "bass1" });
+    audioLoadQueue.loadFile({ src: "sounds/bass2.mp3", id: "bass2" });
+    audioLoadQueue.loadFile({ src: "sounds/bass3.mp3", id: "bass3" });
+    audioLoadQueue.loadFile({ src: "sounds/bass4.mp3", id: "bass4" });
 }());

@@ -6,10 +6,11 @@
     var isPressingDown = false;
     var nextFullTick;
     var debounceInterval;
-    var sequencerStep = 0;
+    var sequencerStep = 1;
     var fullTickQueue = new Tetrez.Queue;
     var quarterTickQueue = new Tetrez.Queue;
     var playHiHat = false;
+    var playBass = false;
 
     var resetGameInterval = function() {
         clearInterval(gameInterval);
@@ -28,8 +29,7 @@
 
         switch (completedRows) {
             case 4:
-                createjs.Sound.play("sunrise");
-                playHiHat = true;
+                playBass = true;
 
                 Tetrez.view.rotate({
                     x: Math.PI / 8
@@ -37,7 +37,7 @@
             break;
 
             case 8:
-                createjs.Sound.play("sunrise");
+                playHiHat = true;
 
                 Tetrez.view.rotate({
                     y: Math.PI / 8
@@ -311,10 +311,13 @@
                 }
             }, 75);
 
+            // Intro sound
+            createjs.Sound.play("sunrise");
+
             // Sequencer
             sequencerInterval = setInterval(function() {
                 switch (sequencerStep) {
-                    case 0:
+                    case 1:
                         if (typeof nextFullTick === "function") {
                             nextFullTick();
                             nextFullTick = undefined;
@@ -326,16 +329,17 @@
                         }
 
                         createjs.Sound.play("bd");
-                    break;
-
-                    case 1:
+                        if (playBass) Tetrez.sequencers.bass.unmute();
                     break;
 
                     case 2:
-                        if (playHiHat) createjs.Sound.play("hh");
                     break;
 
                     case 3:
+                        if (playHiHat) createjs.Sound.play("hh");
+                    break;
+
+                    case 4:
                     break;
                 }
 
@@ -344,12 +348,14 @@
                     quarterTickQueue.pop();
                 }
 
-                if (sequencerStep === 3) {
-                    sequencerStep = 0;
+                if (sequencerStep === 4) {
+                    sequencerStep = 1;
                 } else {
                     ++sequencerStep;
                 }
             }, Tetrez.config.initSpeed / 4);
+
+            Tetrez.sequencers.bass.init();
 
             Tetrez.view.init();
             resetGameInterval();
