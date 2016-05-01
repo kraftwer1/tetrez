@@ -2,6 +2,7 @@
     var isGameOver = false;
     var gameInterval;
     var sequencerInterval;
+    var bassSequencerInterval;
     var hasFallingTetromino = false;
     var isPressingDown = false;
     var nextFullTick;
@@ -205,6 +206,7 @@
         if (Tetrez.isGameOver) {
             clearInterval(gameInterval);
             clearInterval(sequencerInterval);
+            clearInterval(bassSequencerInterval);
 
             document.getElementById("gameOverScreen").style.display = "flex";
 
@@ -355,7 +357,7 @@
                 }
             }, Tetrez.config.initSpeed / 4);
 
-            Tetrez.sequencers.bass.init();
+            bassSequencerInterval = Tetrez.sequencers.bass.init();
 
             Tetrez.view.init();
             resetGameInterval();

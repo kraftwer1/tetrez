@@ -1,5 +1,4 @@
 (function() {
-    var bassSequencerInterval;
     var bassSequencerStep = 1;
     var isInitted = false;
     var isMuted = true;
@@ -11,7 +10,7 @@
             if (isInitted) return;
             isInitted = true;
 
-            bassSequencerInterval = setInterval(function() {
+            return setInterval(function() {
                 if (isMuted) return;
 
                 switch (bassSequencerStep) {
