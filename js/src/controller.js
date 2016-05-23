@@ -12,6 +12,7 @@
     var quarterTickQueue = new Tetrez.Queue;
     var playHiHat = false;
     var playBass = false;
+    var completedRows = 0;
 
     var resetGameInterval = function() {
         clearInterval(gameInterval);
@@ -25,10 +26,10 @@
         };
     };
 
-    Tetrez.field.onRowComplete = function(completedRows) {
-        if (Tetrez.config.isDebugMode) completedRows *= 4;
+    Tetrez.field.onRowComplete = function(_completedRows) {
+        if (Tetrez.config.isDebugMode) _completedRows *= 4;
 
-        switch (completedRows) {
+        switch (_completedRows) {
             case 4:
                 playBass = true;
 
@@ -103,6 +104,8 @@
                 Tetrez.field.resetCompletedRows();
             break;
         }
+
+        completedRows += _completedRows;
 
         Tetrez.field.onRowsComplete = function() {
             quarterTickQueue.push(function() {
@@ -208,11 +211,14 @@
             clearInterval(sequencerInterval);
             clearInterval(bassSequencerInterval);
 
-            document.getElementById("gameOverScreen").style.display = "flex";
+            document.getElementById("score").innerHTML = "Score: " + (completedRows * 10);
+            document.getElementById("score").style.visibility = "visible";
+            document.getElementById("gameOver").style.display = "block";
+            document.getElementById("screen").style.display = "flex";
 
             // This setTimeout() is required to play the animation
             setTimeout(function() {
-                document.getElementById("gameOverScreen").classList.remove("transparent");
+                document.getElementById("screen").classList.remove("transparent");
             }, 200);
         }
 

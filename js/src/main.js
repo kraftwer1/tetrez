@@ -1,19 +1,23 @@
 (function() {
-    var titleScreen = document.getElementById("titleScreen");
-    var gameOverScreen = document.getElementById("gameOverScreen");
+    var screen = document.getElementById("screen");
+    var gameOver = document.getElementById("gameOver");
 
     var startGame = function() {
-        titleScreen.addEventListener("transitionend", function(e) {
+        var transitionendHandler = function(e) {
             e.target.style.display = "none";
-        });
+            document.getElementById("play").style.display = "none";
 
-        titleScreen.classList.add("transparent");
+            screen.removeEventListener("transitionend", transitionendHandler);
+        };
+
+        screen.addEventListener("transitionend", transitionendHandler);
+        screen.classList.add("transparent");
         
         // This starts the game
         Tetrez.controller.init();
 
         // Make sure the game can be started only once
-        titleScreen.removeEventListener("click", startGame);
+        screen.removeEventListener("click", startGame);
     };
 
     // Prevent elastic scrolling (e.g. iOS Safari)
@@ -21,7 +25,7 @@
         e.preventDefault();
     });
 
-    gameOverScreen.addEventListener("click", function() {
+    gameOver.addEventListener("click", function() {
         location.reload();
     });
 
@@ -30,7 +34,7 @@
 
     // Game can be played when everything is loaded
     audioLoadQueue.on("complete", function() {
-        titleScreen.addEventListener("click", startGame);
+        screen.addEventListener("click", startGame);
 
         document.getElementById("loading").style.display = "none";
         document.getElementById("play").style.display = "block";
@@ -40,7 +44,7 @@
             // where sometimes the canvas does not have a height of 100%
             // because the window.innerHeight variable isn't ready
             setTimeout(function() {
-                titleScreen.click();
+                screen.click();
             }, 1000);
         }
     });
