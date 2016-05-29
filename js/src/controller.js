@@ -105,9 +105,9 @@
             break;
         }
 
-        completedRows += _completedRows;
+        Tetrez.field.onRowsComplete = function(_completedRows) {
+            completedRows += _completedRows;
 
-        Tetrez.field.onRowsComplete = function() {
             quarterTickQueue.push(function() {
                 createjs.Sound.play("trance");
             });
