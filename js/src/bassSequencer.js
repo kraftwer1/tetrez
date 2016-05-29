@@ -1,15 +1,11 @@
 (function() {
     var bassSequencerStep = 1;
-    var isInitted = false;
     var isMuted = true;
 
     Tetrez.sequencers = {};
 
     Tetrez.sequencers.bass = {
-        init: function() {
-            if (isInitted) return;
-            isInitted = true;
-
+        init: function(speed) {
             return setInterval(function() {
                 if (isMuted) return;
 
@@ -76,7 +72,7 @@
                 } else {
                     ++bassSequencerStep;
                 }
-            }, Tetrez.config.initSpeed / 4);
+            }, speed);
         },
 
         unmute: function() {

@@ -13,6 +13,7 @@
     var playHiHat = false;
     var playBass = false;
     var completedRows = 0;
+    var currentSpeed = Tetrez.config.initSpeed;
 
     var resetGameInterval = function() {
         clearInterval(gameInterval);
@@ -22,7 +23,7 @@
 
         nextFullTick = function() {
             moveDown();
-            gameInterval = setInterval(moveDown, Tetrez.config.initSpeed);
+            startGameInterval();
         };
     };
 
@@ -102,6 +103,9 @@
                 });
 
                 Tetrez.field.resetCompletedRows();
+
+                // Game gets faster!
+                accelerate();
             break;
         }
 
@@ -161,7 +165,7 @@
 
                     debounceInterval = setInterval(function() {
                         createjs.Sound.play("halfbd");
-                    }, Tetrez.config.initSpeed / 4);
+                    }, currentSpeed / 4);
                 });
             }
         } else {
@@ -237,6 +241,68 @@
             Tetrez.field.applyTetromino(tetromino, 1);
             Tetrez.view.draw();
         }
+    };
+
+    var startGameInterval = function() {
+        clearInterval(gameInterval);
+        gameInterval = setInterval(moveDown, currentSpeed);
+    };
+
+    var startSequencerInterval = function() {
+        clearInterval(sequencerInterval);
+
+        sequencerInterval = setInterval(function() {
+            switch (sequencerStep) {
+                case 1:
+                    if (typeof nextFullTick === "function") {
+                        nextFullTick();
+                        nextFullTick = undefined;
+                    }
+
+                    while (fullTickQueue.getLength()) {
+                        fullTickQueue.getCurrent()();
+                        fullTickQueue.pop();
+                    }
+
+                    createjs.Sound.play("bd");
+                    if (playBass) Tetrez.sequencers.bass.unmute();
+                break;
+
+                case 2:
+                break;
+
+                case 3:
+                    if (playHiHat) createjs.Sound.play("hh");
+                break;
+
+                case 4:
+                break;
+            }
+
+            while (quarterTickQueue.getLength()) {
+                quarterTickQueue.getCurrent()();
+                quarterTickQueue.pop();
+            }
+
+            if (sequencerStep === 4) {
+                sequencerStep = 1;
+            } else {
+                ++sequencerStep;
+            }
+        }, currentSpeed / 4);
+    };
+
+    var startBassSequencerInterval = function() {
+        clearInterval(bassSequencerInterval);
+        bassSequencerInterval = Tetrez.sequencers.bass.init(currentSpeed / 4);
+    };
+
+    var accelerate = function() {
+        currentSpeed = currentSpeed - 100;
+
+        startGameInterval();
+        startSequencerInterval();
+        startBassSequencerInterval();
     };
 
     Tetrez.controller = {
@@ -322,48 +388,9 @@
             // Intro sound
             createjs.Sound.play("sunrise");
 
-            // Sequencer
-            sequencerInterval = setInterval(function() {
-                switch (sequencerStep) {
-                    case 1:
-                        if (typeof nextFullTick === "function") {
-                            nextFullTick();
-                            nextFullTick = undefined;
-                        }
-
-                        while (fullTickQueue.getLength()) {
-                            fullTickQueue.getCurrent()();
-                            fullTickQueue.pop();
-                        }
-
-                        createjs.Sound.play("bd");
-                        if (playBass) Tetrez.sequencers.bass.unmute();
-                    break;
-
-                    case 2:
-                    break;
-
-                    case 3:
-                        if (playHiHat) createjs.Sound.play("hh");
-                    break;
-
-                    case 4:
-                    break;
-                }
-
-                while (quarterTickQueue.getLength()) {
-                    quarterTickQueue.getCurrent()();
-                    quarterTickQueue.pop();
-                }
-
-                if (sequencerStep === 4) {
-                    sequencerStep = 1;
-                } else {
-                    ++sequencerStep;
-                }
-            }, Tetrez.config.initSpeed / 4);
-
-            bassSequencerInterval = Tetrez.sequencers.bass.init();
+            // Sequencers
+            startSequencerInterval();
+            startBassSequencerInterval();
 
             Tetrez.view.init();
             resetGameInterval();
