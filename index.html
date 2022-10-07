@@ -1,43 +1,34 @@
 <!DOCTYPE html>
-
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Tetrez</title>
-        <link rel="stylesheet" href="styles.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Tetrez</title>
+  </head>
+  <body>
+    <div id="screen">
+      <div id="title">
+        <span>T</span><span>E</span><span>T</span><span>R</span><span>E</span
+        ><span>Z</span>
+      </div>
 
-    <body>
-        <div id="screen">
-            <div id="title">
-                <span>T</span><span>E</span><span>T</span><span>R</span><span>E</span><span>Z</span>
-            </div>
+      <div id="loading">Loading</div>
+      <div id="play">
+        Start<img class="icon speaker" src="/images/speaker.svg" />
+      </div>
+      <div id="gameOver">
+        Gameover<img class="icon reload" src="/images/reload.svg" />
+      </div>
+      <div id="score">Score</div>
+    </div>
 
-            <div id="loading">Loading</div>
-            <div id="play">Start<img class="icon speaker" src="images/speaker.svg"></div>
-            <div id="gameOver">Gameover<img class="icon reload" src="images/reload.svg"></div>
-            <div id="score">Score</div>
-        </div>
+    <canvas id="canvas"></canvas>
 
-        <canvas id="canvas"></canvas>
+    <script>
+      window.global = window
+    </script>
 
-        <script src="js/lib/lodash.js"></script>
-        <script src="js/lib/three.js"></script>
-        <script src="js/lib/sylvester.js"></script>
-        <script src="js/lib/hammer.js"></script>
-        <script src="js/lib/hammer-time.js"></script>
-        <script src="js/lib/preloadjs-0.6.2.combined.js"></script>
-        <script src="js/lib/soundjs-0.6.2.combined.js"></script>
-        
-        <script src="js/src/config.js"></script>
-        <script src="js/src/Tetromino.js"></script>
-        <script src="js/src/Tile.js"></script>
-        <script src="js/src/Queue.js"></script>
-        <script src="js/src/view.js"></script>
-        <script src="js/src/field.js"></script>
-        <script src="js/src/bassSequencer.js"></script>
-        <script src="js/src/controller.js"></script>
-        <script src="js/src/main.js"></script>
-    </body>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
